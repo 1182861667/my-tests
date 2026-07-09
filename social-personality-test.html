@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>测测你隐藏的社交人格</title>
+<meta name="description" content="你在人群中是哪种存在？8道题揭开你的社交人格底色">
+<style>
+/* ============================================================
+   🎨 全局样式 & 设计系统
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #8B5CF6;
+  --primary-dark: #7C3AED;
+  --bg-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  --card-bg: #ffffff;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-light: #9CA3AF;
+  --shadow: 0 10px 40px rgba(0,0,0,0.12);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+
+/* ============================================================
+   📱 卡片容器
+   ============================================================ */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: fadeSlideUp 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(30px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fillProgress {
+  from { width: 0%; }
+}
+
+/* ============================================================
+   🌊 装饰波纹
+   ============================================================ */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* ============================================================
+   🏠 开场页
+   ============================================================ */
+.splash-emoji {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: bounceIn 0.8s ease;
+  display: inline-block;
+}
+
+.splash-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+}
+
+.splash-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.splash-desc {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 24px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+.divider {
+  width: 40px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+  opacity: 0.5;
+}
+
+.btn-start {
+  display: inline-block;
+  padding: 14px 48px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+  letter-spacing: 1px;
+}
+
+.btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.45);
+}
+
+.btn-start:active {
+  transform: scale(0.96);
+}
+
+.disclaimer-small {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.question-count-tag {
+  display: inline-block;
+  padding: 4px 16px;
+  background: rgba(139, 92, 246, 0.08);
+  color: var(--primary);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   📊 进度条
+   ============================================================ */
+.progress-wrap {
+  width: 100%;
+  height: 4px;
+  background: #F3F4F6;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ============================================================
+   ❓ 题目区
+   ============================================================ */
+.question-counter {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.question-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.option-btn {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  background: #F9FAFB;
+  border: 2px solid #E5E7EB;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: left;
+  font-family: inherit;
+  position: relative;
+}
+
+.option-btn:hover {
+  border-color: var(--primary);
+  background: rgba(139, 92, 246, 0.03);
+  transform: translateX(4px);
+}
+
+.option-btn:active {
+  transform: scale(0.98);
+}
+
+.option-btn.selected {
+  border-color: var(--primary);
+  background: rgba(139, 92, 246, 0.06);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.option-btn .option-letter {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  background: #E5E7EB;
+  border-radius: 50%;
+  margin-right: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+.option-btn.selected .option-letter {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-next {
+  display: none;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: all var(--transition);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.btn-next.visible {
+  display: block;
+  animation: fadeSlideUp 0.3s ease;
+}
+
+.btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.btn-next:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   🏆 结果页
+   ============================================================ */
+.result-emoji {
+  font-size: 72px;
+  margin-bottom: 12px;
+  animation: bounceIn 0.6s ease;
+}
+
+.result-type-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.result-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 20px;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+
+.result-advice {
+  text-align: left;
+  background: rgba(139, 92, 246, 0.04);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+  border-left: 3px solid var(--primary);
+}
+
+.result-advice-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.result-advice ul {
+  list-style: none;
+  padding: 0;
+}
+
+.result-advice li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.result-advice li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-retry, .btn-share {
+  flex: 1;
+  padding: 13px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+}
+
+.btn-retry {
+  background: #F3F4F6;
+  color: var(--text-secondary);
+}
+
+.btn-retry:hover {
+  background: #E5E7EB;
+}
+
+.btn-share {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.btn-share:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.btn-share:active, .btn-retry:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   💬 分享提示 toast
+   ============================================================ */
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120px);
+  background: #1F2937;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 999;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================================
+   🔄 计算动画
+   ============================================================ */
+.calculating {
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.calc-emoji {
+  font-size: 48px;
+  animation: pulse 1s infinite;
+}
+
+.calc-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-top: 16px;
+}
+
+.calc-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.calc-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 1.2s infinite;
+  opacity: 0.3;
+}
+
+.calc-dots span:nth-child(2) { animation-delay: 0.2s; }
+.calc-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ============================================================
+   🔒 屏幕切换
+   ============================================================ */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* ============================================================
+   📱 响应式
+   ============================================================ */
+@media (max-width: 380px) {
+  .card { padding: 24px 20px; }
+  .splash-title { font-size: 22px; }
+  .question-text { font-size: 18px; }
+  .result-title { font-size: 20px; }
+  .splash-emoji { font-size: 52px; }
+  .result-emoji { font-size: 56px; }
+}
+
+@media (min-width: 768px) {
+  .card { padding: 40px 36px; }
+  .splash-title { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- 🏠 开场页 -->
+  <div id="screen-splash" class="screen active">
+    <div class="card">
+      <div class="splash-emoji">🦊</div>
+      <h1 class="splash-title">测测你隐藏的社交人格</h1>
+      <p class="splash-subtitle">你在人群中的真实角色是什么？</p>
+      <div class="divider"></div>
+      <p class="splash-desc">同样是社交，有人在充电，有人在耗电。你的社交底色，可能和你想的不一样。8道题，揭开真相✨</p>
+      <div class="question-count-tag">共 8 题 · 约1分钟</div>
+      <br>
+      <button class="btn-start" onclick="startTest()">✨ 开始测试</button>
+      <p class="disclaimer-small">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+
+  <!-- ❓ 答题页 -->
+  <div id="screen-question" class="screen">
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="question-counter" id="questionCounter">1 / 8</div>
+      <h2 class="question-text" id="questionText"></h2>
+      <div class="options-list" id="optionsList"></div>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()">下一题 →</button>
+    </div>
+  </div>
+
+  <!-- ⏳ 计算中 -->
+  <div id="screen-calculating" class="screen">
+    <div class="card">
+      <div class="calculating">
+        <div class="calc-emoji">🔮</div>
+        <p class="calc-text">正在生成你的专属答案…</p>
+        <div class="calc-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🏆 结果页 -->
+  <div id="screen-result" class="screen">
+    <div class="card">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-type-badge" id="resultBadge"></div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <div class="divider"></div>
+      <p class="result-desc" id="resultDesc"></p>
+      <div class="result-advice" id="resultAdvice">
+        <div class="result-advice-title">💡 给你的建议</div>
+        <ul id="resultAdviceList"></ul>
+      </div>
+      <div class="result-actions">
+        <button class="btn-retry" onclick="restartTest()">🔄 重新测试</button>
+        <button class="btn-share" onclick="shareResult()">📤 分享结果</button>
+      </div>
+      <p class="disclaimer-small" style="margin-top:12px;">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ################################################################
+// 🎨 测试配置 —— 修改这里即可定制整个测试
+// ################################################################
+
+const TEST_CONFIG = {
+  title: '测测你隐藏的社交人格',
+  subtitle: '你在人群中的真实角色是什么？',
+  description: '同样是社交，有人在充电，有人在耗电。你的社交底色，可能和你想的不一样。8道题，揭开真相✨',
+  emoji: '🦊',
+  themeColor: '#8B5CF6',
+  accentColor: '#EC4899',
+
+  questions: [
+    {
+      text: '周五晚上，朋友临时约你参加一个10人的聚会，你的第一反应是？',
+      options: [
+        { text: '太好了！立刻答应，已经开始想穿什么了', score: 4 },
+        { text: '犹豫一下，但还是去了，毕竟好久没见', score: 3 },
+        { text: '先问都有谁，再决定去不去', score: 2 },
+        { text: '内心抗拒，找借口婉拒了', score: 1 }
+      ]
+    },
+    {
+      text: '在一个全是陌生人的场合，你通常怎么做？',
+      options: [
+        { text: '主动破冰，找话题跟身边的人聊起来', score: 4 },
+        { text: '等别人先开口，顺着话题自然加入', score: 3 },
+        { text: '观察周围，找到看起来好说话的人再聊', score: 2 },
+        { text: '安静待在角落，等人来搭话', score: 1 }
+      ]
+    },
+    {
+      text: '社交结束后回到家，你的感受通常是？',
+      options: [
+        { text: '意犹未尽，恨不得天天这样', score: 4 },
+        { text: '充实但有点累，需要睡一觉', score: 3 },
+        { text: '筋疲力尽，需要独处半天回血', score: 2 },
+        { text: '感觉被掏空，下次能躲就躲', score: 1 }
+      ]
+    },
+    {
+      text: '群聊里突然冷场了，你会怎么做？',
+      options: [
+        { text: '立刻抛出一个话题或者表情包救场', score: 4 },
+        { text: '偶尔救场，但不是每次都愿意出头', score: 3 },
+        { text: '默默围观，等着看谁会先开口', score: 2 },
+        { text: '正好趁冷场退出群聊', score: 1 }
+      ]
+    },
+    {
+      text: '同事/同学组织团建，你的态度是？',
+      options: [
+        { text: '举双手赞成，最好每个月都搞一次', score: 4 },
+        { text: '去就去呗，反正也没啥坏处', score: 3 },
+        { text: '看活动内容，有意思才去', score: 2 },
+        { text: '能不去就不去，团建是变相加班', score: 1 }
+      ]
+    },
+    {
+      text: '有人当面夸你，你的反应是？',
+      options: [
+        { text: '大方接受，笑着回夸对方', score: 4 },
+        { text: '有点不好意思，但还是谢谢对方', score: 3 },
+        { text: '脸红低头，不知道怎么回', score: 2 },
+        { text: '怀疑对方是不是有什么目的', score: 1 }
+      ]
+    },
+    {
+      text: '你觉得自己有几个可以深夜打电话的密友？',
+      options: [
+        { text: '5个以上，朋友是我的能量来源', score: 4 },
+        { text: '3-4个，足够了', score: 3 },
+        { text: '1-2个，贵精不贵多', score: 2 },
+        { text: '0-1个，有事自己扛', score: 1 }
+      ]
+    },
+    {
+      text: '如果给你一个完美的周末，你会怎么过？',
+      options: [
+        { text: '约上三五好友，吃喝玩乐一整天', score: 4 },
+        { text: '半天社交半天独处，平衡最重要', score: 3 },
+        { text: '只约最亲密的人，安静地待在一起', score: 2 },
+        { text: '一个人在家，看书追剧撸猫，完美', score: 1 }
+      ]
+    }
+  ],
+
+  results: [
+    {
+      title: '🦋 社交蝴蝶',
+      emoji: '🦋',
+      range: [27, 32],
+      color: '#F59E0B',
+      description: '你是人群中的能量发动机！社交对你来说不是任务，而是充电。你天生懂得如何让气氛活跃起来，在人群中如鱼得水。朋友眼里的你：永远有话题、永远不冷场、永远充满活力。',
+      advice: [
+        '你的共情雷达很强，适合做需要大量人际互动的工作',
+        '但小心别变成「讨好型社交」，偶尔也要问问自己累不累',
+        '试着把一部分社交能量投入到深度关系，而非广度',
+        '独处对你来说反而是功课——每周给自己留半天「静音时间」'
+      ]
+    },
+    {
+      title: '🐬 温和连接者',
+      emoji: '🐬',
+      range: [20, 26],
+      color: '#10B981',
+      description: '你是社交场上的「恒温器」——不冷不热刚刚好。你不排斥人群，但也不依赖人群。你能自然地融入各种场合，同时也享受高质量的独处时光。朋友眼里的你：舒服、好相处、不给人压力。',
+      advice: [
+        '你的社交节奏是最健康的——保持住这种平衡',
+        '你适合做「小圈子深度社交」，少而精的朋友关系更适合你',
+        '偶尔可以主动组织一次聚会，你会发现掌控感比想象中好',
+        '你在职场中适合做协调者或桥梁型角色'
+      ]
+    },
+    {
+      title: '🦉 安静观察者',
+      emoji: '🦉',
+      range: [14, 19],
+      color: '#6366F1',
+      description: '你不是不合群，你只是选择性地合群。在人群中你更像一个安静的观察者，默默收集信息，在关键时刻说出让人惊讶的金句。朋友眼里的你：有点神秘、但特别靠谱、话少但每句都在点子上。',
+      advice: [
+        '你的优势在于深度而非广度——不必羡慕「社交蝴蝶」',
+        '1对1的深度对话比群体社交更能滋养你',
+        '在职场中，你的「观察力」是超能力——善用它',
+        '偶尔强迫自己参加一次大型活动，可能会有意外收获'
+      ]
+    },
+    {
+      title: '🐱 独处艺术家',
+      emoji: '🐱',
+      range: [8, 13],
+      color: '#8B5CF6',
+      description: '你是一个以独处为充电方式的人。社交对你来说消耗大于补充，但这不意味着你有问题——你只是用不同的方式与世界连接。你的内心世界极其丰富，那些被你「省下来」的社交时间，都变成了思考、创造和自我成长。朋友眼里的你：虽然不常出现、但出现时一定真诚。',
+      advice: [
+        '你的能量来源是独处，这不是缺点，只是特点',
+        '不必强迫自己变成外向者，但可以培养1-2个深度关系',
+        '线上社交可能是你的舒适区——试试从文字开始建立连接',
+        '你的深度思考能力是很多人羡慕不来的天赋'
+      ]
+    }
+  ],
+
+  disclaimer: '纯趣味测试，非科学评估 · 仅供娱乐',
+  shareText: '我刚测了「社交人格测试」，结果太准了！你是哪种类型？来测测👉',
+};
+
+// ################################################################
+// ⚙️ 测试引擎 —— 以下代码无需修改
+// ################################################################
+
+let currentQuestion = 0;
+let scores = [];
+
+function initConfig() {
+  const cfg = TEST_CONFIG;
+  document.title = cfg.title;
+  document.querySelector('meta[name="description"]').content = cfg.description || cfg.title;
+
+  const root = document.documentElement;
+  root.style.setProperty('--primary', cfg.themeColor);
+  root.style.setProperty('--primary-dark', adjustColor(cfg.themeColor, -15));
+  root.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${cfg.themeColor} 0%, ${cfg.accentColor} 100%)`);
+
+  document.getElementById('splashEmoji') && (document.getElementById('splashEmoji').textContent = cfg.emoji || '🧠');
+}
+
+function adjustColor(hex, amount) {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.max(0, Math.min(255, ((num >> 16) & 0xFF) + amount));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xFF) + amount));
+  const b = Math.max(0, Math.min(255, (num & 0xFF) + amount));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screenId).classList.add('active');
+}
+
+function startTest() {
+  currentQuestion = 0;
+  scores = [];
+  showScreen('question');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+  const total = cfg.questions.length;
+
+  document.getElementById('progressBar').style.width = ((currentQuestion) / total * 100) + '%';
+  document.getElementById('questionCounter').textContent = `${currentQuestion + 1} / ${total}`;
+  document.getElementById('questionText').textContent = q.text;
+
+  const optionsHtml = q.options.map((opt, i) => {
+    const letter = String.fromCharCode(65 + i);
+    return `<button class="option-btn" onclick="selectOption(${i}, this)" data-index="${i}">
+        <span class="option-letter">${letter}</span>${opt.text}
+      </button>`;
+  }).join('');
+
+  document.getElementById('optionsList').innerHTML = optionsHtml;
+  document.getElementById('btnNext').classList.remove('visible');
+
+  const card = document.querySelector('#screen-question .card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeSlideUp 0.4s ease';
+}
+
+function selectOption(index, btn) {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  scores[currentQuestion] = q.options[index].score;
+  const nextBtn = document.getElementById('btnNext');
+  nextBtn.classList.add('visible');
+  nextBtn.textContent = currentQuestion < cfg.questions.length - 1 ? '下一题 →' : '查看结果 ✨';
+}
+
+function nextQuestion() {
+  const cfg = TEST_CONFIG;
+  if (scores[currentQuestion] === undefined) {
+    showToast('请先选择一个选项哦~');
+    return;
+  }
+  currentQuestion++;
+  if (currentQuestion < cfg.questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  const cfg = TEST_CONFIG;
+  const totalScore = scores.reduce((a, b) => a + b, 0);
+
+  let matchedResult = cfg.results[0];
+  for (const r of cfg.results) {
+    if (totalScore >= r.range[0] && totalScore <= r.range[1]) {
+      matchedResult = r;
+      break;
+    }
+  }
+
+  showScreen('calculating');
+
+  setTimeout(() => {
+    showScreen('result');
+    document.getElementById('resultEmoji').textContent = matchedResult.emoji || '🎯';
+    document.getElementById('resultBadge').textContent = matchedResult.title;
+    document.getElementById('resultBadge').style.background = (matchedResult.color || cfg.themeColor) + '18';
+    document.getElementById('resultBadge').style.color = matchedResult.color || cfg.themeColor;
+    document.getElementById('resultTitle').textContent = matchedResult.title;
+    document.getElementById('resultDesc').textContent = matchedResult.description || '';
+
+    const adviceList = document.getElementById('resultAdviceList');
+    if (matchedResult.advice && matchedResult.advice.length > 0) {
+      adviceList.innerHTML = matchedResult.advice.map(a => `<li>${a}</li>`).join('');
+      document.getElementById('resultAdvice').style.display = 'block';
+    } else {
+      document.getElementById('resultAdvice').style.display = 'none';
+    }
+  }, 1500);
+}
+
+function restartTest() {
+  showScreen('splash');
+}
+
+function shareResult() {
+  const text = TEST_CONFIG.shareText || `我刚测了「${TEST_CONFIG.title}」，来看看你是什么类型？`;
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: TEST_CONFIG.title, text: text, url: url }).catch(() => { copyToClipboard(text + '\n' + url); });
+  } else {
+    copyToClipboard(text + '\n' + url);
+  }
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => { showToast('已复制分享文案和链接 ✅'); }).catch(() => { fallbackCopy(text); });
+  } else { fallbackCopy(text); }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.left = '-9999px'; ta.style.top = '-9999px';
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try { document.execCommand('copy'); showToast('已复制分享文案和链接 ✅'); } catch (e) { showToast('复制失败，请手动复制页面链接'); }
+  document.body.removeChild(ta);
+}
+
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg; toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2000);
+}
+
+initConfig();
+</script>
+</body>
+</html>
