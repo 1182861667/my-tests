@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>测测你的社交电量</title>
+<meta name="description" content="25道题测出你的社交电量值，看看你是满电战神还是深度休眠型">
+<style>
+/* ============================================================
+   🎨 全局样式 & 设计系统
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #8B5CF6;
+  --primary-dark: #7C3AED;
+  --bg-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  --card-bg: #ffffff;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-light: #9CA3AF;
+  --shadow: 0 10px 40px rgba(0,0,0,0.12);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+
+/* ============================================================
+   📱 卡片容器
+   ============================================================ */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: fadeSlideUp 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(30px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fillProgress {
+  from { width: 0%; }
+}
+
+/* ============================================================
+   🌊 装饰波纹
+   ============================================================ */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* ============================================================
+   🏠 开场页
+   ============================================================ */
+.splash-emoji {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: bounceIn 0.8s ease;
+  display: inline-block;
+}
+
+.splash-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+}
+
+.splash-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.splash-desc {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 24px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+.divider {
+  width: 40px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+  opacity: 0.5;
+}
+
+.btn-start {
+  display: inline-block;
+  padding: 14px 48px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+  letter-spacing: 1px;
+}
+
+.btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.45);
+}
+
+.btn-start:active {
+  transform: scale(0.96);
+}
+
+.disclaimer-small {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.question-count-tag {
+  display: inline-block;
+  padding: 4px 16px;
+  background: rgba(139, 92, 246, 0.08);
+  color: var(--primary);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   📊 进度条
+   ============================================================ */
+.progress-wrap {
+  width: 100%;
+  height: 4px;
+  background: #F3F4F6;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ============================================================
+   ❓ 题目区
+   ============================================================ */
+.question-counter {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.question-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.option-btn {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  background: #F9FAFB;
+  border: 2px solid #E5E7EB;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: left;
+  font-family: inherit;
+  position: relative;
+}
+
+.option-btn:hover {
+  border-color: var(--primary);
+  background: rgba(139, 92, 246, 0.03);
+  transform: translateX(4px);
+}
+
+.option-btn:active {
+  transform: scale(0.98);
+}
+
+.option-btn.selected {
+  border-color: var(--primary);
+  background: rgba(139, 92, 246, 0.06);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.option-btn .option-letter {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  background: #E5E7EB;
+  border-radius: 50%;
+  margin-right: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+.option-btn.selected .option-letter {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-next {
+  display: none;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: all var(--transition);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.btn-next.visible {
+  display: block;
+  animation: fadeSlideUp 0.3s ease;
+}
+
+.btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.btn-next:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   🏆 结果页
+   ============================================================ */
+.result-emoji {
+  font-size: 72px;
+  margin-bottom: 12px;
+  animation: bounceIn 0.6s ease;
+}
+
+.result-type-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.result-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 20px;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+
+.result-advice {
+  text-align: left;
+  background: rgba(139, 92, 246, 0.04);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+  border-left: 3px solid var(--primary);
+}
+
+.result-advice-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.result-advice ul {
+  list-style: none;
+  padding: 0;
+}
+
+.result-advice li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.result-advice li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-retry, .btn-share {
+  flex: 1;
+  padding: 13px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+}
+
+.btn-retry {
+  background: #F3F4F6;
+  color: var(--text-secondary);
+}
+
+.btn-retry:hover {
+  background: #E5E7EB;
+}
+
+.btn-share {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.btn-share:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.btn-share:active, .btn-retry:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   💬 分享提示 toast
+   ============================================================ */
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120px);
+  background: #1F2937;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 999;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================================
+   🔄 计算动画
+   ============================================================ */
+.calculating {
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.calc-emoji {
+  font-size: 48px;
+  animation: pulse 1s infinite;
+}
+
+.calc-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-top: 16px;
+}
+
+.calc-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.calc-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 1.2s infinite;
+  opacity: 0.3;
+}
+
+.calc-dots span:nth-child(2) { animation-delay: 0.2s; }
+.calc-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ============================================================
+   🔒 屏幕切换
+   ============================================================ */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* ============================================================
+   📱 响应式
+   ============================================================ */
+@media (max-width: 380px) {
+  .card { padding: 24px 20px; }
+  .splash-title { font-size: 22px; }
+  .question-text { font-size: 18px; }
+  .result-title { font-size: 20px; }
+  .splash-emoji { font-size: 52px; }
+  .result-emoji { font-size: 56px; }
+}
+
+@media (min-width: 768px) {
+  .card { padding: 40px 36px; }
+  .splash-title { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- ============================================================
+       🏠 开场页
+       ============================================================ -->
+  <div id="screen-splash" class="screen active">
+    <div class="card">
+      <div class="splash-emoji" id="splashEmoji">🧠</div>
+      <h1 class="splash-title" id="splashTitle">测试标题</h1>
+      <p class="splash-subtitle" id="splashSubtitle"></p>
+      <div class="divider"></div>
+      <p class="splash-desc" id="splashDesc"></p>
+      <div class="question-count-tag" id="questionCountTag"></div>
+      <br>
+      <button class="btn-start" onclick="startTest()">✨ 开始测试</button>
+      <p class="disclaimer-small">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ❓ 答题页
+       ============================================================ -->
+  <div id="screen-question" class="screen">
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="question-counter" id="questionCounter">1 / 8</div>
+      <h2 class="question-text" id="questionText"></h2>
+      <div class="options-list" id="optionsList"></div>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()">下一题 →</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ⏳ 计算中
+       ============================================================ -->
+  <div id="screen-calculating" class="screen">
+    <div class="card">
+      <div class="calculating">
+        <div class="calc-emoji">🔮</div>
+        <p class="calc-text">正在生成你的专属答案…</p>
+        <div class="calc-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       🏆 结果页
+       ============================================================ -->
+  <div id="screen-result" class="screen">
+    <div class="card">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-type-badge" id="resultBadge"></div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <div class="divider"></div>
+      <p class="result-desc" id="resultDesc"></p>
+      <div class="result-advice" id="resultAdvice">
+        <div class="result-advice-title">💡 给你的建议</div>
+        <ul id="resultAdviceList"></ul>
+      </div>
+      <div class="result-actions">
+        <button class="btn-retry" onclick="restartTest()">🔄 重新测试</button>
+        <button class="btn-share" onclick="shareResult()">📤 分享结果</button>
+      </div>
+      <p class="disclaimer-small" style="margin-top:12px;">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ################################################################
+// 🎨 测试配置区 —— 修改这里即可定制整个测试
+// ################################################################
+
+const TEST_CONFIG = {
+  title: '测测你的社交电量',
+  subtitle: '25道题，测出你的社交续航力',
+  description: '你的社交电量还剩多少？是满电战神还是深度休眠？25道题，测出你真实的社交能量值，看看你是哪种社交电池。',
+  emoji: '🔋',
+  themeColor: '#3B82F6',
+  accentColor: '#06B6D4',
+
+  questions: [
+    { text: '周五晚上收到聚会邀请，你的第一反应是？',
+      options: [
+        { text: '太好了！几点开始？叫上谁？', score: 4 },
+        { text: '挺期待的，先看看穿什么', score: 3 },
+        { text: '去也行不去也行，看心情', score: 2 },
+        { text: '能不能找个理由不去...', score: 1 } ] },
+    { text: '在人群中待了2小时，你的状态是？',
+      options: [
+        { text: '越聊越嗨，完全停不下来', score: 4 },
+        { text: '还挺享受，但开始有点累了', score: 3 },
+        { text: '想找借口先溜了', score: 2 },
+        { text: '已经耗尽，大脑完全宕机', score: 1 } ] },
+    { text: '手机响了99+条消息，你会？',
+      options: [
+        { text: '立刻点开，一条条回', score: 4 },
+        { text: '先看重要的，其他慢慢回', score: 3 },
+        { text: '等有空再统一回', score: 2 },
+        { text: '假装没看见，明天再说', score: 1 } ] },
+    { text: '你的理想周末是？',
+      options: [
+        { text: '约满朋友，连赶三场局', score: 4 },
+        { text: '白天出门逛逛，晚上和朋友吃饭', score: 3 },
+        { text: '在家待着，最多线上聊聊天', score: 2 },
+        { text: '关机，谁也别找我', score: 1 } ] },
+    { text: '参加陌生人多的活动，你？',
+      options: [
+        { text: '主动搭讪，加一圈微信回来', score: 4 },
+        { text: '找看起来好接近的人聊天', score: 3 },
+        { text: '缩在角落刷手机等结束', score: 2 },
+        { text: '能不去就不去，去了也想逃', score: 1 } ] },
+    { text: '下班后同事说"一起吃个饭？"',
+      options: [
+        { text: '走啊！正好不想回家', score: 4 },
+        { text: '行，简单吃点就行', score: 3 },
+        { text: '今天有点累，下次吧', score: 2 },
+        { text: '内心OS：求你别叫我', score: 1 } ] },
+    { text: '你在群聊里的角色是？',
+      options: [
+        { text: '话题发起者+气氛组组长', score: 4 },
+        { text: '偶尔冒泡，有话题就聊', score: 3 },
+        { text: '只看不说话的潜水员', score: 2 },
+        { text: '已开启免打扰', score: 1 } ] },
+    { text: '连续社交3天后，你需要？',
+      options: [
+        { text: '继续！根本停不下来', score: 4 },
+        { text: '休息半天就能满血复活', score: 3 },
+        { text: '至少一天不跟任何人说话', score: 2 },
+        { text: '需要三天以上的社交戒断期', score: 1 } ] },
+    { text: '你的微信通讯录好友数量？',
+      options: [
+        { text: '500+，还在不断增加', score: 4 },
+        { text: '200-500，该有的都有', score: 3 },
+        { text: '100-200，精简为主', score: 2 },
+        { text: '不到100，能不加就不加', score: 1 } ] },
+    { text: '被临时拉去开会/团建，你？',
+      options: [
+        { text: '正好，又可以认识新朋友', score: 4 },
+        { text: '调整下心态，去了也不错', score: 3 },
+        { text: '全程坐后排等结束', score: 2 },
+        { text: '找各种理由推掉', score: 1 } ] },
+    { text: '你觉得"社交"这个词？',
+      options: [
+        { text: '是充电！和人交流让我兴奋', score: 4 },
+        { text: '是生活的一部分，适度就好', score: 3 },
+        { text: '是任务，完成就行', score: 2 },
+        { text: '是消耗，能少则少', score: 1 } ] },
+    { text: '朋友说你"最近怎么不出来玩了？"',
+      options: [
+        { text: '我每天都在玩啊，是你没约我', score: 4 },
+        { text: '最近确实忙，这周末约', score: 3 },
+        { text: '在家挺好的，不想动', score: 2 },
+        { text: '......让我静静', score: 1 } ] },
+    { text: '在饭局上被点名发言，你？',
+      options: [
+        { text: '来来来，我给大家讲个故事', score: 4 },
+        { text: '简单说两句，表达下观点', score: 3 },
+        { text: '紧张到大脑空白，说两句赶紧坐下', score: 2 },
+        { text: '恨不得钻到桌子底下', score: 1 } ] },
+    { text: '你的社交"回血"方式是？',
+      options: [
+        { text: '约更多人出来玩，越热闹越好', score: 4 },
+        { text: '找一两个好朋友小聚', score: 3 },
+        { text: '独自看电影/打游戏/看书', score: 2 },
+        { text: '一个人待着，谁也别理我', score: 1 } ] },
+    { text: '电梯里遇到不太熟的邻居，你？',
+      options: [
+        { text: '主动打招呼聊几句', score: 4 },
+        { text: '点头微笑，简单寒暄', score: 3 },
+        { text: '低头看手机装没看见', score: 2 },
+        { text: '等下一趟电梯', score: 1 } ] },
+    { text: '你发朋友圈的频率？',
+      options: [
+        { text: '几乎每天都发，分享欲爆棚', score: 4 },
+        { text: '一周几次，有好玩的就发', score: 3 },
+        { text: '一个月一两次，偶尔冒个泡', score: 2 },
+        { text: '半年没发了，朋友圈是啥', score: 1 } ] },
+    { text: '接到陌生电话，你？',
+      options: [
+        { text: '直接接，万一有好事呢', score: 4 },
+        { text: '看眼号码，像正常就接', score: 3 },
+        { text: '基本不接，等对方发短信', score: 2 },
+        { text: '一律拒接，骚扰电话太多', score: 1 } ] },
+    { text: '在KTV你通常是？',
+      options: [
+        { text: '麦霸本人，从头唱到尾', score: 4 },
+        { text: '轮流唱，气氛到了就上', score: 3 },
+        { text: '坐在角落喝酒吃水果', score: 2 },
+        { text: '为什么要在KTV，在家不好吗', score: 1 } ] },
+    { text: '有人突然来找你聊天，你？',
+      options: [
+        { text: '太好了，正好想找人说话', score: 4 },
+        { text: '聊呗，看看什么事', score: 3 },
+        { text: '有啥事直接说，别寒暄', score: 2 },
+        { text: '内心：有事说事没事别来', score: 1 } ] },
+    { text: '你觉得最舒服的社交距离是？',
+      options: [
+        { text: '越近越好，勾肩搭背才亲切', score: 4 },
+        { text: '一臂距离，能聊到就行', score: 3 },
+        { text: '保持距离，各自安好', score: 2 },
+        { text: '线上就好，别见面', score: 1 } ] },
+    { text: '旅行时你更喜欢？',
+      options: [
+        { text: '组大团去，人越多越好玩', score: 4 },
+        { text: '和2-3个好友一起自由行', score: 3 },
+        { text: '和一个最亲近的人去', score: 2 },
+        { text: '独自旅行，想怎么走怎么走', score: 1 } ] },
+    { text: '别人对你的第一印象通常是？',
+      options: [
+        { text: '"这人好热情/好能聊"', score: 4 },
+        { text: '"挺友善的，好相处"', score: 3 },
+        { text: '"有点安静/不太好接近"', score: 2 },
+        { text: '"感觉很高冷/社恐"', score: 1 } ] },
+    { text: '你觉得"独处"是？',
+      options: [
+        { text: '无聊，有人一起才开心', score: 4 },
+        { text: '偶尔可以，但不能太久', score: 3 },
+        { text: '挺舒服的，需要适量', score: 2 },
+        { text: '人间天堂，别打扰我', score: 1 } ] },
+    { text: '如果社交能量是一个电池，你觉得你是？',
+      options: [
+        { text: '核动力，永远在线', score: 4 },
+        { text: '快充型，充一会就能用很久', score: 3 },
+        { text: '普通电池，用完得充一会', score: 2 },
+        { text: '老年机电池，充一晚用两小时', score: 1 } ] },
+    { text: '如果给你一天完全自由，你会？',
+      options: [
+        { text: '约满朋友，从早嗨到晚', score: 4 },
+        { text: '上午出门逛逛，下午约人吃饭', score: 3 },
+        { text: '在家追剧/打游戏，线上聊聊天', score: 2 },
+        { text: '关掉手机，一个人待一整天', score: 1 } ] }
+  ],
+
+  results: [
+    {
+      title: '⚡ 满电战神型',
+      emoji: '⚡',
+      range: [84, 100],
+      color: '#F59E0B',
+      description: '你是社交界的"核动力永动机"——和人待在一起不但不消耗你，反而让你越来越嗨。聚会是你的主场，陌生人是你的新朋友，沉默让你浑身难受。你能同时维护N个社交关系，手机永远在响，日程永远排满。别人社交是放电，你社交是充电。在你的世界里，"一个人待着"才是最可怕的惩罚。',
+      advice: [
+        '你的社交能量是稀缺天赋，但也注意倾听别人的感受',
+        '不是所有人都跟得上你的节奏，给慢热型朋友一点时间',
+        '偶尔给自己留一点独处空间，你会发现安静也有力量',
+        '注意区分"真朋友"和"社交过客"，精力要花在值得的人身上'
+      ]
+    },
+    {
+      title: '🔋 快充型选手',
+      emoji: '🔋',
+      range: [67, 83],
+      color: '#10B981',
+      description: '你的社交电池容量不错，而且充电速度很快——一顿好饭、一场好觉就能满血复活。你能享受热闹，也能接受安静，是朋友圈里的"万能插头"，什么局都能适配。你不是那种主动搞事的人，但只要有人叫你，你总能融入得很好。你的社交能量管理能力很强：知道什么时候该上、什么时候该收，是典型的"高性价比社交者"。',
+      advice: [
+        '你的平衡感很好，继续保持"社交-独处"的节奏',
+        '偶尔主动发起一次聚会，你会发现自己也有号召力',
+        '别因为"去也行不去也行"就总是选择不去，有时候迈出去会有惊喜',
+        '找到让你真正兴奋的社交场景，把精力集中在那里'
+      ]
+    },
+    {
+      title: '🔌 均衡待机型',
+      emoji: '🔌',
+      range: [50, 66],
+      color: '#3B82F6',
+      description: '你的社交电池是"标准配置"——用的时候正常输出，不用的时候安静待机。你享受社交，但更在意质量而非数量；能聊得来就多聊几句，聊不来也不勉强。你不是社恐，只是"社交节能主义者"。你清楚地知道自己的能量上限在哪里，会在快没电之前优雅撤退。在你的社交哲学里，"差不多就好"比"尽兴而归"更重要。',
+      advice: [
+        '你的自我管理能力很强，这是成熟的表现',
+        '但有时候可以稍微"贪心"一点，多待一会可能会有意外收获',
+        '试着把你"还剩20%电量"的信号告诉朋友，他们会理解的',
+        '定期安排一次高质量的深度社交，比参加十次无聊聚会更有价值'
+      ]
+    },
+    {
+      title: '🔅 节能模式型',
+      emoji: '🔅',
+      range: [34, 49],
+      color: '#8B5CF6',
+      description: '你的社交电池容量不大，但你已经学会了"省电模式"——只把电量花在值得的人和事上。你更喜欢一对一的深度交流，而非大群体的热闹。在人群中你往往安静观察，只在关键时刻说一两句精准的话。你不是不想社交，而是社交对你来说太"贵"了，每一分电量都要精打细算。你的朋友不多，但每一个都是经过筛选的"真朋友"。',
+      advice: [
+        '你的"少而精"社交策略很聪明，不要觉得这是缺点',
+        '提前告诉朋友你需要"充电时间"，他们会更理解你',
+        '试着发展一两个线上社交场景，比线下消耗少很多',
+        '在不得不社交的场合，给自己设一个"撤退时间点"'
+      ]
+    },
+    {
+      title: '🌙 深度休眠型',
+      emoji: '🌙',
+      range: [25, 33],
+      color: '#6366F1',
+      description: '你的社交电池处于"深度休眠"状态——不是坏了，是太珍贵了，不舍得用。对大多数人来说社交是日常，对你来说是"重大事件"，需要提前做心理建设、事后需要漫长恢复期。你享受独处的安静，在你的世界里，一个人的时光比一百个聚会都珍贵。你不是讨厌人，你只是更擅长和自己相处。你的内心世界丰富到不需要外界充电，一个人就是一支队伍。',
+      advice: [
+        '独处是你的超能力，不要因为外界压力而否定自己',
+        '但完全封闭也会错过美好，试着每周安排一次"微型社交"',
+        '线上社交也是社交，文字交流可能比面对面更适合你',
+        '找到和你同频的人——同样喜欢安静的人在一起，不需要说话也很舒服'
+      ]
+    }
+  ],
+
+  disclaimer: '纯趣味测试，非科学评估 · 仅供娱乐',
+  shareText: '我刚测了「社交电量」，结果太真实了！你是满电战神还是深度休眠？来测测看👉',
+};
+
+// ################################################################
+// ⚙️ 测试引擎 —— 以下代码无需修改
+// ################################################################
+
+let currentQuestion = 0;
+let scores = [];
+
+// ── 初始化 ──────────────────────────────────────
+
+function initConfig() {
+  const cfg = TEST_CONFIG;
+  document.title = cfg.title;
+  document.querySelector('meta[name="description"]').content = cfg.description || cfg.title;
+
+  // 设置 CSS 变量
+  const root = document.documentElement;
+  root.style.setProperty('--primary', cfg.themeColor);
+  root.style.setProperty('--primary-dark', adjustColor(cfg.themeColor, -15));
+  root.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${cfg.themeColor} 0%, ${cfg.accentColor} 100%)`);
+
+  // 开场页
+  document.getElementById('splashEmoji').textContent = cfg.emoji || '🧠';
+  document.getElementById('splashTitle').textContent = cfg.title;
+  document.getElementById('splashSubtitle').textContent = cfg.subtitle || '';
+  document.getElementById('splashDesc').textContent = cfg.description || '';
+  document.getElementById('questionCountTag').textContent = `共 ${cfg.questions.length} 题 · 约1分钟`;
+}
+
+function adjustColor(hex, amount) {
+  // 简单的颜色加深
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.max(0, Math.min(255, ((num >> 16) & 0xFF) + amount));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xFF) + amount));
+  const b = Math.max(0, Math.min(255, (num & 0xFF) + amount));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}
+
+// ── 屏幕切换 ──────────────────────────────────
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screenId).classList.add('active');
+}
+
+// ── 开始测试 ──────────────────────────────────
+
+function startTest() {
+  currentQuestion = 0;
+  scores = [];
+  showScreen('question');
+  renderQuestion();
+}
+
+// ── 渲染题目 ──────────────────────────────────
+
+function renderQuestion() {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+  const total = cfg.questions.length;
+
+  document.getElementById('progressBar').style.width = ((currentQuestion) / total * 100) + '%';
+  document.getElementById('questionCounter').textContent = `${currentQuestion + 1} / ${total}`;
+  document.getElementById('questionText').textContent = q.text;
+
+  const optionsHtml = q.options.map((opt, i) => {
+    const letter = String.fromCharCode(65 + i); // A, B, C, D...
+    return `
+      <button class="option-btn" onclick="selectOption(${i}, this)" data-index="${i}">
+        <span class="option-letter">${letter}</span>${opt.text}
+      </button>
+    `;
+  }).join('');
+
+  document.getElementById('optionsList').innerHTML = optionsHtml;
+  document.getElementById('btnNext').classList.remove('visible');
+
+  // Re-animate card
+  const card = document.querySelector('#screen-question .card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeSlideUp 0.4s ease';
+}
+
+// ── 选择选项 ──────────────────────────────────
+
+function selectOption(index, btn) {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+
+  // 移除所有选中状态
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  // 添加当前选中状态
+  btn.classList.add('selected');
+
+  // 记录分值
+  scores[currentQuestion] = q.options[index].score;
+
+  // 显示下一题按钮
+  const nextBtn = document.getElementById('btnNext');
+  nextBtn.classList.add('visible');
+  nextBtn.textContent = currentQuestion < cfg.questions.length - 1 ? '下一题 →' : '查看结果 ✨';
+}
+
+// ── 下一题 ──────────────────────────────────
+
+function nextQuestion() {
+  const cfg = TEST_CONFIG;
+  if (scores[currentQuestion] === undefined) {
+    // 没有选择，提示
+    showToast('请先选择一个选项哦~');
+    return;
+  }
+
+  currentQuestion++;
+
+  if (currentQuestion < cfg.questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+// ── 显示结果 ──────────────────────────────────
+
+function showResult() {
+  const cfg = TEST_CONFIG;
+
+  // 计算总分
+  const totalScore = scores.reduce((a, b) => a + b, 0);
+
+  // 找到匹配的结果
+  let matchedResult = cfg.results[0];
+  for (const r of cfg.results) {
+    if (totalScore >= r.range[0] && totalScore <= r.range[1]) {
+      matchedResult = r;
+      break;
+    }
+  }
+
+  // 先显示计算动画
+  showScreen('calculating');
+
+  setTimeout(() => {
+    // 显示结果
+    showScreen('result');
+
+    document.getElementById('resultEmoji').textContent = matchedResult.emoji || '🎯';
+    document.getElementById('resultBadge').textContent = matchedResult.title;
+    document.getElementById('resultBadge').style.background = (matchedResult.color || cfg.themeColor) + '18';
+    document.getElementById('resultBadge').style.color = matchedResult.color || cfg.themeColor;
+    document.getElementById('resultTitle').textContent = matchedResult.title;
+    document.getElementById('resultDesc').textContent = matchedResult.description || '';
+
+    const adviceList = document.getElementById('resultAdviceList');
+    if (matchedResult.advice && matchedResult.advice.length > 0) {
+      adviceList.innerHTML = matchedResult.advice.map(a => `<li>${a}</li>`).join('');
+      document.getElementById('resultAdvice').style.display = 'block';
+    } else {
+      document.getElementById('resultAdvice').style.display = 'none';
+    }
+  }, 1500);
+}
+
+// ── 重新测试 ──────────────────────────────────
+
+function restartTest() {
+  showScreen('splash');
+}
+
+// ── 分享 ──────────────────────────────────────
+
+function shareResult() {
+  const text = TEST_CONFIG.shareText || `我刚测了「${TEST_CONFIG.title}」，来看看你是什么类型？`;
+  const url = window.location.href;
+
+  // 尝试使用 Web Share API
+  if (navigator.share) {
+    navigator.share({
+      title: TEST_CONFIG.title,
+      text: text,
+      url: url,
+    }).catch(() => {
+      copyToClipboard(text + '\n' + url);
+    });
+  } else {
+    copyToClipboard(text + '\n' + url);
+  }
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('已复制分享文案和链接 ✅');
+    }).catch(() => {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('已复制分享文案和链接 ✅');
+  } catch (e) {
+    showToast('复制失败，请手动复制页面链接');
+  }
+  document.body.removeChild(ta);
+}
+
+// ── Toast ──────────────────────────────────────
+
+let toastTimer;
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2000);
+}
+
+// ── 启动 ──────────────────────────────────────
+
+initConfig();
+</script>
+</body>
+</html>
