@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>测测你的恋爱MBTI</title>
+<meta name="description" content="25道题测出你的恋爱MBTI，揭开你的爱情底色">
+<style>
+/* ============================================================
+   🎨 全局样式 & 设计系统
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #8B5CF6;
+  --primary-dark: #7C3AED;
+  --bg-gradient: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+  --card-bg: #ffffff;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-light: #9CA3AF;
+  --shadow: 0 10px 40px rgba(0,0,0,0.12);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+
+/* ============================================================
+   📱 卡片容器
+   ============================================================ */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: fadeSlideUp 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(30px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fillProgress {
+  from { width: 0%; }
+}
+
+/* ============================================================
+   🌊 装饰波纹
+   ============================================================ */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px;
+  left: -40px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* ============================================================
+   🏠 开场页
+   ============================================================ */
+.splash-emoji {
+  font-size: 64px;
+  margin-bottom: 16px;
+  animation: bounceIn 0.8s ease;
+  display: inline-block;
+}
+
+.splash-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+}
+
+.splash-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.splash-desc {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 24px;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+.divider {
+  width: 40px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 2px;
+  margin: 0 auto 20px;
+  opacity: 0.5;
+}
+
+.btn-start {
+  display: inline-block;
+  padding: 14px 48px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 20px rgba(139, 92, 246, 0.35);
+  letter-spacing: 1px;
+}
+
+.btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(139, 92, 246, 0.45);
+}
+
+.btn-start:active {
+  transform: scale(0.96);
+}
+
+.disclaimer-small {
+  font-size: 11px;
+  color: var(--text-light);
+  margin-top: 16px;
+  position: relative;
+  z-index: 1;
+  opacity: 0.7;
+}
+
+.question-count-tag {
+  display: inline-block;
+  padding: 4px 16px;
+  background: rgba(139, 92, 246, 0.08);
+  color: var(--primary);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   📊 进度条
+   ============================================================ */
+.progress-wrap {
+  width: 100%;
+  height: 4px;
+  background: #F3F4F6;
+  border-radius: 2px;
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+
+/* ============================================================
+   ❓ 题目区
+   ============================================================ */
+.question-counter {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 700;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.question-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.option-btn {
+  display: block;
+  width: 100%;
+  padding: 16px 20px;
+  background: #F9FAFB;
+  border: 2px solid #E5E7EB;
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: left;
+  font-family: inherit;
+  position: relative;
+}
+
+.option-btn:hover {
+  border-color: var(--primary);
+  background: rgba(139, 92, 246, 0.03);
+  transform: translateX(4px);
+}
+
+.option-btn:active {
+  transform: scale(0.98);
+}
+
+.option-btn.selected {
+  border-color: var(--primary);
+  background: rgba(139, 92, 246, 0.06);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.option-btn .option-letter {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  background: #E5E7EB;
+  border-radius: 50%;
+  margin-right: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+}
+
+.option-btn.selected .option-letter {
+  background: var(--primary);
+  color: #fff;
+}
+
+.btn-next {
+  display: none;
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: all var(--transition);
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.btn-next.visible {
+  display: block;
+  animation: fadeSlideUp 0.3s ease;
+}
+
+.btn-next:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.btn-next:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   🏆 结果页
+   ============================================================ */
+.result-emoji {
+  font-size: 72px;
+  margin-bottom: 12px;
+  animation: bounceIn 0.6s ease;
+}
+
+.result-type-badge {
+  display: inline-block;
+  padding: 6px 20px;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.result-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.result-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  margin-bottom: 20px;
+  text-align: left;
+  position: relative;
+  z-index: 1;
+}
+
+.result-advice {
+  text-align: left;
+  background: rgba(139, 92, 246, 0.04);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+  border-left: 3px solid var(--primary);
+}
+
+.result-advice-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.result-advice ul {
+  list-style: none;
+  padding: 0;
+}
+
+.result-advice li {
+  font-size: 13px;
+  color: var(--text-secondary);
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.result-advice li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.result-actions {
+  display: flex;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.btn-retry, .btn-share {
+  flex: 1;
+  padding: 13px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none;
+  font-family: inherit;
+  letter-spacing: 0.5px;
+}
+
+.btn-retry {
+  background: #F3F4F6;
+  color: var(--text-secondary);
+}
+
+.btn-retry:hover {
+  background: #E5E7EB;
+}
+
+.btn-share {
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+}
+
+.btn-share:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+}
+
+.btn-share:active, .btn-retry:active {
+  transform: scale(0.96);
+}
+
+/* ============================================================
+   💬 分享提示 toast
+   ============================================================ */
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-120px);
+  background: #1F2937;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: 600;
+  z-index: 999;
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================================
+   🔄 计算动画
+   ============================================================ */
+.calculating {
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.calc-emoji {
+  font-size: 48px;
+  animation: pulse 1s infinite;
+}
+
+.calc-text {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-top: 16px;
+}
+
+.calc-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.calc-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  animation: pulse 1.2s infinite;
+  opacity: 0.3;
+}
+
+.calc-dots span:nth-child(2) { animation-delay: 0.2s; }
+.calc-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ============================================================
+   🔒 屏幕切换
+   ============================================================ */
+.screen {
+  display: none;
+}
+
+.screen.active {
+  display: block;
+}
+
+/* ============================================================
+   📱 响应式
+   ============================================================ */
+@media (max-width: 380px) {
+  .card { padding: 24px 20px; }
+  .splash-title { font-size: 22px; }
+  .question-text { font-size: 18px; }
+  .result-title { font-size: 20px; }
+  .splash-emoji { font-size: 52px; }
+  .result-emoji { font-size: 56px; }
+}
+
+@media (min-width: 768px) {
+  .card { padding: 40px 36px; }
+  .splash-title { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- ============================================================
+       🏠 开场页
+       ============================================================ -->
+  <div id="screen-splash" class="screen active">
+    <div class="card">
+      <div class="splash-emoji" id="splashEmoji">🧠</div>
+      <h1 class="splash-title" id="splashTitle">测试标题</h1>
+      <p class="splash-subtitle" id="splashSubtitle"></p>
+      <div class="divider"></div>
+      <p class="splash-desc" id="splashDesc"></p>
+      <div class="question-count-tag" id="questionCountTag"></div>
+      <br>
+      <button class="btn-start" onclick="startTest()">✨ 开始测试</button>
+      <p class="disclaimer-small">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ❓ 答题页
+       ============================================================ -->
+  <div id="screen-question" class="screen">
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="question-counter" id="questionCounter">1 / 8</div>
+      <h2 class="question-text" id="questionText"></h2>
+      <div class="options-list" id="optionsList"></div>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()">下一题 →</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ⏳ 计算中
+       ============================================================ -->
+  <div id="screen-calculating" class="screen">
+    <div class="card">
+      <div class="calculating">
+        <div class="calc-emoji">🔮</div>
+        <p class="calc-text">正在生成你的专属答案…</p>
+        <div class="calc-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       🏆 结果页
+       ============================================================ -->
+  <div id="screen-result" class="screen">
+    <div class="card">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-type-badge" id="resultBadge"></div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <div class="divider"></div>
+      <p class="result-desc" id="resultDesc"></p>
+      <div class="result-advice" id="resultAdvice">
+        <div class="result-advice-title">💡 给你的建议</div>
+        <ul id="resultAdviceList"></ul>
+      </div>
+      <div class="result-actions">
+        <button class="btn-retry" onclick="restartTest()">🔄 重新测试</button>
+        <button class="btn-share" onclick="shareResult()">📤 分享结果</button>
+      </div>
+      <p class="disclaimer-small" style="margin-top:12px;">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ################################################################
+// 🎨 测试配置区 —— 修改这里即可定制整个测试
+// ################################################################
+
+const TEST_CONFIG = {
+  title: '测测你的恋爱MBTI',
+  subtitle: '25道题，揭开你的爱情底色',
+  description: '你是炙热玫瑰还是自由蝴蝶？在爱情里，每个人都有自己独特的"人格代码"。25道题，测出你的恋爱MBTI，看看你在爱情里的真实模样。',
+  emoji: '💖',
+  themeColor: '#EC4899',
+  accentColor: '#8B5CF6',
+
+  questions: [
+    { text: '当你喜欢一个人时，你的第一反应是？',
+      options: [
+        { text: '直接表白，喜欢就要说出来', score: 4 },
+        { text: '暗示对方，等ta先开口', score: 3 },
+        { text: '默默对ta好，用行动证明', score: 2 },
+        { text: '藏心里，怕被拒绝也怕尴尬', score: 1 } ] },
+    { text: '恋爱中你最看重什么？',
+      options: [
+        { text: '激情和心动感，没有心动不如不谈', score: 4 },
+        { text: '仪式感和浪漫，细节决定爱情', score: 3 },
+        { text: '稳定和安全感，细水长流才是真', score: 2 },
+        { text: '自由和空间，谈恋爱也要做自己', score: 1 } ] },
+    { text: '和恋人吵架了，你会怎么处理？',
+      options: [
+        { text: '当场说清楚，绝不隔夜', score: 4 },
+        { text: '先冷静一下，再温柔地沟通', score: 3 },
+        { text: '分析对错，理性讨论解决方案', score: 2 },
+        { text: '躲起来等对方先来找自己', score: 1 } ] },
+    { text: '你的理想约会是？',
+      options: [
+        { text: '去游乐场/密室/蹦极，越刺激越好', score: 4 },
+        { text: '烛光晚餐+手写情书+满天星', score: 3 },
+        { text: '在家做饭+窝沙发看电影', score: 2 },
+        { text: '各自看书但待在一起就好', score: 1 } ] },
+    { text: '你怎么表达"我爱你"？',
+      options: [
+        { text: '大声说出来，每天说，说到对方嫌烦', score: 4 },
+        { text: '送精心挑选的礼物和惊喜', score: 3 },
+        { text: '记住ta说过的每一件小事并做到', score: 2 },
+        { text: '给ta足够的空间和信任，不说也懂', score: 1 } ] },
+    { text: '看到恋人和异性朋友聊天，你的反应是？',
+      options: [
+        { text: '直接走过去加入，顺便宣示主权', score: 4 },
+        { text: '有点酸，但会用撒娇来表达', score: 3 },
+        { text: '理性判断，正常社交没什么', score: 2 },
+        { text: '完全不在意，信任是底线', score: 1 } ] },
+    { text: '你认为"我爱你"应该多久说一次？',
+      options: [
+        { text: '每天都说，说到变成口头禅', score: 4 },
+        { text: '特殊日子说，更有仪式感', score: 3 },
+        { text: '不用说，行动证明就够了', score: 2 },
+        { text: '想说才说，频率根本不重要', score: 1 } ] },
+    { text: '你的恋爱沟通方式更像？',
+      options: [
+        { text: '有什么说什么，直来直去不藏着', score: 4 },
+        { text: '喜欢用表情包和甜蜜话语', score: 3 },
+        { text: '逻辑清晰，有理有据地讨论', score: 2 },
+        { text: '能文字就不语音，能语音就不见面', score: 1 } ] },
+    { text: '纪念日你会怎么准备？',
+      options: [
+        { text: '提前一个月策划惊喜，越轰动越好', score: 4 },
+        { text: '精心准备礼物+手写卡片', score: 3 },
+        { text: '订个好餐厅吃顿饭', score: 2 },
+        { text: '当天再说，心意到了就行', score: 1 } ] },
+    { text: '你怎么看待异地恋？',
+      options: [
+        { text: '很难接受，需要经常见面', score: 4 },
+        { text: '可以接受，但要经常视频+互送礼物', score: 3 },
+        { text: '没问题，有计划结束异地就行', score: 2 },
+        { text: '完全OK，距离反而产生美', score: 1 } ] },
+    { text: '恋人生日快到了，你会？',
+      options: [
+        { text: '早就准备好了大惊喜', score: 4 },
+        { text: '精挑细选一份有意义的礼物', score: 3 },
+        { text: '实用为主，直接问ta想要什么', score: 2 },
+        { text: '当天买个蛋糕意思一下', score: 1 } ] },
+    { text: '你处理分手的方式是？',
+      options: [
+        { text: '大哭一场然后立刻投入新生活', score: 4 },
+        { text: '写很长的日记慢慢消化情绪', score: 3 },
+        { text: '理性分析原因，总结经验教训', score: 2 },
+        { text: '拉黑删除，当没认识过这个人', score: 1 } ] },
+    { text: '你最受不了恋人做什么？',
+      options: [
+        { text: '冷暴力，有话不说憋着', score: 4 },
+        { text: '不记得纪念日和重要承诺', score: 3 },
+        { text: '说话不算数，承诺当放屁', score: 2 },
+        { text: '过度控制我的生活和社交', score: 1 } ] },
+    { text: '你的爱情观更接近？',
+      options: [
+        { text: '不爱则已，一爱就要惊天动地', score: 4 },
+        { text: '爱情需要经营和仪式感', score: 3 },
+        { text: '平淡是真，稳定最重要', score: 2 },
+        { text: '一个人也挺好，恋爱只是加分项', score: 1 } ] },
+    { text: '你怎么对待恋人的朋友？',
+      options: [
+        { text: '热情融入，和大家打成一片', score: 4 },
+        { text: '保持礼貌，偶尔一起玩', score: 3 },
+        { text: '公事公办，不过度社交', score: 2 },
+        { text: '尽量不见面，各玩各的', score: 1 } ] },
+    { text: '你觉得恋爱中谁应该主动？',
+      options: [
+        { text: '谁喜欢谁就主动，不分男女', score: 4 },
+        { text: '对方应该多主动一些', score: 3 },
+        { text: '双方轮流主动，保持平衡', score: 2 },
+        { text: '顺其自然，不用刻意安排', score: 1 } ] },
+    { text: '你的手机壁纸是？',
+      options: [
+        { text: '和恋人的合照/情侣头像', score: 4 },
+        { text: '恋人送的东西或约会纪念照', score: 3 },
+        { text: '风景或抽象图，低调一点', score: 2 },
+        { text: '和恋爱完全无关的图', score: 1 } ] },
+    { text: '你怎么看待"给恋人看手机"？',
+      options: [
+        { text: '随时可以看，光明正大', score: 4 },
+        { text: '可以看，但希望对方先说一声', score: 3 },
+        { text: '没必要看，信任就够了', score: 2 },
+        { text: '绝对不行，这是个人隐私底线', score: 1 } ] },
+    { text: '你会在社交媒体秀恩爱吗？',
+      options: [
+        { text: '经常发，全世界都要知道', score: 4 },
+        { text: '特殊日子发，有仪式感', score: 3 },
+        { text: '偶尔发，低调就好', score: 2 },
+        { text: '从不发，感情是两个人的事', score: 1 } ] },
+    { text: '你理想中的求婚场景是？',
+      options: [
+        { text: '大庭广众下的惊喜求婚', score: 4 },
+        { text: '浪漫旅行中的精心策划', score: 3 },
+        { text: '温馨家里的自然求婚', score: 2 },
+        { text: '不需要求婚，想结就结', score: 1 } ] },
+    { text: '你怎么处理恋人的坏情绪？',
+      options: [
+        { text: '陪ta一起骂/一起哭，情绪共振', score: 4 },
+        { text: '做顿好吃的安慰ta', score: 3 },
+        { text: '帮ta分析问题找解决方案', score: 2 },
+        { text: '给ta空间，让ta自己消化', score: 1 } ] },
+    { text: '你对"结婚"的态度是？',
+      options: [
+        { text: '恨不得明天就领证', score: 4 },
+        { text: '顺其自然，水到渠成最好', score: 3 },
+        { text: '要认真考虑经济和未来规划', score: 2 },
+        { text: '暂时没想过，享受当下', score: 1 } ] },
+    { text: '你和恋人产生分歧时，你倾向于？',
+      options: [
+        { text: '坚持自己的，努力说服对方', score: 4 },
+        { text: '找折中方案，各退一步', score: 3 },
+        { text: '用数据和道理分析谁对', score: 2 },
+        { text: '算了听你的，懒得争', score: 1 } ] },
+    { text: '你认为最浪漫的事是？',
+      options: [
+        { text: '一起去做从没做过的事', score: 4 },
+        { text: '对方偷偷准备的惊喜', score: 3 },
+        { text: '每天一起吃早餐', score: 2 },
+        { text: '互不打扰各自发光', score: 1 } ] },
+    { text: '如果让你对未来的恋人提一个要求，你会说？',
+      options: [
+        { text: '"要像我爱你一样爱我"', score: 4 },
+        { text: '"记得每一个重要的日子"', score: 3 },
+        { text: '"说到做到，靠谱就行"', score: 2 },
+        { text: '"给我自由，别太粘人"', score: 1 } ] }
+  ],
+
+  results: [
+    {
+      title: '🔥 炙热玫瑰型',
+      emoji: '🔥',
+      range: [84, 100],
+      color: '#EF4444',
+      description: '你是爱情里的"行动派"——爱了就全力以赴，从不藏着掖着。你的感情浓烈而直接，像一团燃烧的火焰，靠近你的人都能感受到你的温度。你敢爱敢恨，喜欢一个人就大方追，不喜欢了也绝不拖泥带水。在恋人眼里，你是那个让ta心跳加速、永远不会无聊的人。你的爱是炽热的、占有的、不留退路的——"要么不爱，要么深爱"就是你的信条。',
+      advice: [
+        '你的热情是你最大的魅力，但也记得给对方喘息的空间',
+        '不是所有人都跟得上你的节奏，学会"调温"比"加温"更重要',
+        '感情降温期不要慌，平淡不等于不爱',
+        '找一个能接住你全部热情的人，而不是被你的火焰吓跑的人'
+      ]
+    },
+    {
+      title: '🌹 浪漫诗人型',
+      emoji: '🌹',
+      range: [67, 83],
+      color: '#EC4899',
+      description: '你是天生的"爱情仪式感制造机"。对你来说，爱情不只是两个人在一起，更是一场需要精心策划的浪漫电影。你会记得每一个纪念日，会偷偷准备惊喜，会在深夜写一段长长的情话。你的恋人在你身边永远不缺被爱的感觉——因为你的每一个细节都在说"你很重要"。你相信爱情需要经营，而你是那个永远愿意多走一步的人。',
+      advice: [
+        '你的仪式感让人心动，但别让"标准"变成对方的压力',
+        '浪漫不必每次都很大，日常里的小确幸同样动人',
+        '当现实打碎浪漫滤镜时，记得爱情也可以有烟火气',
+        '找一个愿意配合你浪漫的人，而不是觉得你"做作"的人'
+      ]
+    },
+    {
+      title: '🏡 温暖港湾型',
+      emoji: '🏡',
+      range: [50, 66],
+      color: '#10B981',
+      description: '你是爱情里最让人安心的存在。你不追求轰轰烈烈，但你的稳定和可靠让每一个靠近你的人都觉得"到家了"。你会记住对方随口说的话，会在ta加班时默默送一杯热饮，会在吵架后主动递台阶。你的爱是温的、持续的、让人有安全感的。在快餐式恋爱的时代，你是那个愿意慢慢来、好好过的人。恋人在你身边不需要猜，因为你的爱写在每一个日常细节里。',
+      advice: [
+        '你的稳定是稀缺品质，但别忘了偶尔也需要被照顾',
+        '太懂事容易吃亏，学会表达自己的需求',
+        '试着偶尔"任性"一次，你会发现对方比你想象的更包容',
+        '找一个懂得珍惜你付出的人，而不是把你的好当作理所当然'
+      ]
+    },
+    {
+      title: '🧊 理智灯塔型',
+      emoji: '🧊',
+      range: [34, 49],
+      color: '#6366F1',
+      description: '你是爱情里的"清醒者"。你不会因为心动就失去理智，在感情中始终保持着独立判断。你擅长分析问题、解决矛盾，是恋人眼里的"军师"和"定海神针"。你给的爱不是甜言蜜语，而是靠谱——说到做到、规划未来、遇事不慌。你可能不是最浪漫的，但你是最让人有底气的。你相信好的爱情是两个独立的人并肩前行，而不是互相消耗。',
+      advice: [
+        '你的理性是优势，但感情有时候需要"不讲道理"的温柔',
+        '别总是给解决方案，有时候对方只是需要一个拥抱',
+        '试着放下分析模式，允许自己"失控"一次',
+        '找一个能让你卸下盔甲的人，而不是总需要你解决问题的人'
+      ]
+    },
+    {
+      title: '🦋 自由蝴蝶型',
+      emoji: '🦋',
+      range: [25, 33],
+      color: '#8B5CF6',
+      description: '你是爱情里的"自由灵魂"。你享受爱情，但绝不被爱情定义。你需要大量的个人空间，讨厌被束缚和控制。对你来说，最好的恋爱状态是"两个人各自发光，偶尔交汇"。你可能不善于甜言蜜语，也不会天天黏在一起，但当你出现时，你的独特和真实会让对方着迷。你相信"我爱你，但我是我"——爱情是生活的一部分，但不是全部。',
+      advice: [
+        '你的独立很酷，但别让对方觉得你在"不在乎"',
+        '给自由加上一点点仪式感，会让关系更稳固',
+        '试着主动表达爱意，哪怕只是一条简单的消息',
+        '找一个同样需要空间的人，而不是总想黏着你的类型'
+      ]
+    }
+  ],
+
+  disclaimer: '纯趣味测试，非科学评估 · 仅供娱乐',
+  shareText: '我刚测了「恋爱MBTI」，结果太准了！你是炙热玫瑰还是自由蝴蝶？来测测看👉',
+};
+
+// ################################################################
+// ⚙️ 测试引擎 —— 以下代码无需修改
+// ################################################################
+
+let currentQuestion = 0;
+let scores = [];
+
+// ── 初始化 ──────────────────────────────────────
+
+function initConfig() {
+  const cfg = TEST_CONFIG;
+  document.title = cfg.title;
+  document.querySelector('meta[name="description"]').content = cfg.description || cfg.title;
+
+  // 设置 CSS 变量
+  const root = document.documentElement;
+  root.style.setProperty('--primary', cfg.themeColor);
+  root.style.setProperty('--primary-dark', adjustColor(cfg.themeColor, -15));
+  root.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${cfg.themeColor} 0%, ${cfg.accentColor} 100%)`);
+
+  // 开场页
+  document.getElementById('splashEmoji').textContent = cfg.emoji || '🧠';
+  document.getElementById('splashTitle').textContent = cfg.title;
+  document.getElementById('splashSubtitle').textContent = cfg.subtitle || '';
+  document.getElementById('splashDesc').textContent = cfg.description || '';
+  document.getElementById('questionCountTag').textContent = `共 ${cfg.questions.length} 题 · 约1分钟`;
+}
+
+function adjustColor(hex, amount) {
+  // 简单的颜色加深
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.max(0, Math.min(255, ((num >> 16) & 0xFF) + amount));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xFF) + amount));
+  const b = Math.max(0, Math.min(255, (num & 0xFF) + amount));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}
+
+// ── 屏幕切换 ──────────────────────────────────
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screenId).classList.add('active');
+}
+
+// ── 开始测试 ──────────────────────────────────
+
+function startTest() {
+  currentQuestion = 0;
+  scores = [];
+  showScreen('question');
+  renderQuestion();
+}
+
+// ── 渲染题目 ──────────────────────────────────
+
+function renderQuestion() {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+  const total = cfg.questions.length;
+
+  document.getElementById('progressBar').style.width = ((currentQuestion) / total * 100) + '%';
+  document.getElementById('questionCounter').textContent = `${currentQuestion + 1} / ${total}`;
+  document.getElementById('questionText').textContent = q.text;
+
+  const optionsHtml = q.options.map((opt, i) => {
+    const letter = String.fromCharCode(65 + i); // A, B, C, D...
+    return `
+      <button class="option-btn" onclick="selectOption(${i}, this)" data-index="${i}">
+        <span class="option-letter">${letter}</span>${opt.text}
+      </button>
+    `;
+  }).join('');
+
+  document.getElementById('optionsList').innerHTML = optionsHtml;
+  document.getElementById('btnNext').classList.remove('visible');
+
+  // Re-animate card
+  const card = document.querySelector('#screen-question .card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeSlideUp 0.4s ease';
+}
+
+// ── 选择选项 ──────────────────────────────────
+
+function selectOption(index, btn) {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+
+  // 移除所有选中状态
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  // 添加当前选中状态
+  btn.classList.add('selected');
+
+  // 记录分值
+  scores[currentQuestion] = q.options[index].score;
+
+  // 显示下一题按钮
+  const nextBtn = document.getElementById('btnNext');
+  nextBtn.classList.add('visible');
+  nextBtn.textContent = currentQuestion < cfg.questions.length - 1 ? '下一题 →' : '查看结果 ✨';
+}
+
+// ── 下一题 ──────────────────────────────────
+
+function nextQuestion() {
+  const cfg = TEST_CONFIG;
+  if (scores[currentQuestion] === undefined) {
+    // 没有选择，提示
+    showToast('请先选择一个选项哦~');
+    return;
+  }
+
+  currentQuestion++;
+
+  if (currentQuestion < cfg.questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+// ── 显示结果 ──────────────────────────────────
+
+function showResult() {
+  const cfg = TEST_CONFIG;
+
+  // 计算总分
+  const totalScore = scores.reduce((a, b) => a + b, 0);
+
+  // 找到匹配的结果
+  let matchedResult = cfg.results[0];
+  for (const r of cfg.results) {
+    if (totalScore >= r.range[0] && totalScore <= r.range[1]) {
+      matchedResult = r;
+      break;
+    }
+  }
+
+  // 先显示计算动画
+  showScreen('calculating');
+
+  setTimeout(() => {
+    // 显示结果
+    showScreen('result');
+
+    document.getElementById('resultEmoji').textContent = matchedResult.emoji || '🎯';
+    document.getElementById('resultBadge').textContent = matchedResult.title;
+    document.getElementById('resultBadge').style.background = (matchedResult.color || cfg.themeColor) + '18';
+    document.getElementById('resultBadge').style.color = matchedResult.color || cfg.themeColor;
+    document.getElementById('resultTitle').textContent = matchedResult.title;
+    document.getElementById('resultDesc').textContent = matchedResult.description || '';
+
+    const adviceList = document.getElementById('resultAdviceList');
+    if (matchedResult.advice && matchedResult.advice.length > 0) {
+      adviceList.innerHTML = matchedResult.advice.map(a => `<li>${a}</li>`).join('');
+      document.getElementById('resultAdvice').style.display = 'block';
+    } else {
+      document.getElementById('resultAdvice').style.display = 'none';
+    }
+  }, 1500);
+}
+
+// ── 重新测试 ──────────────────────────────────
+
+function restartTest() {
+  showScreen('splash');
+}
+
+// ── 分享 ──────────────────────────────────────
+
+function shareResult() {
+  const text = TEST_CONFIG.shareText || `我刚测了「${TEST_CONFIG.title}」，来看看你是什么类型？`;
+  const url = window.location.href;
+
+  // 尝试使用 Web Share API
+  if (navigator.share) {
+    navigator.share({
+      title: TEST_CONFIG.title,
+      text: text,
+      url: url,
+    }).catch(() => {
+      copyToClipboard(text + '\n' + url);
+    });
+  } else {
+    copyToClipboard(text + '\n' + url);
+  }
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('已复制分享文案和链接 ✅');
+    }).catch(() => {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('已复制分享文案和链接 ✅');
+  } catch (e) {
+    showToast('复制失败，请手动复制页面链接');
+  }
+  document.body.removeChild(ta);
+}
+
+// ── Toast ──────────────────────────────────────
+
+let toastTimer;
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2000);
+}
+
+// ── 启动 ──────────────────────────────────────
+
+initConfig();
+</script>
+</body>
+</html>
