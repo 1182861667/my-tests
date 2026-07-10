@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>你的职场诊断报告</title>
+<meta name="description" content="25道题系统诊断你的职场状态，5种类型+7模块结构化报告。你是燃烧殆尽型还是温水煮蛙型？来测测看👉">
+<style>
+/* ============================================================
+   全局样式 & 设计系统
+   ============================================================ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #2D3748;
+  --primary-dark: #1A202C;
+  --accent: #E53E3E;
+  --bg: #F7F5F0;
+  --card-bg: #ffffff;
+  --text-primary: #1A202C;
+  --text-secondary: #4A5568;
+  --text-light: #A0AEC0;
+  --border: #E2E8F0;
+  --shadow: 0 2px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.10);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#app { width: 100%; max-width: 480px; margin: 0 auto; }
+
+/* Animations */
+@keyframes fadeSlideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); } 70% { transform: scale(0.9); } 100% { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+@keyframes fillBar { from { width: 0%; } }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ============================================================
+   通用卡片
+   ============================================================ */
+.card, .report-card {
+  background: var(--card-bg);
+  margin: 0 12px 12px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: fadeSlideUp 0.5s ease;
+  overflow: hidden;
+}
+.card { padding: 32px 24px; text-align: center; }
+.report-card { padding: 24px 20px; text-align: left; }
+
+/* ============================================================
+   开场页
+   ============================================================ */
+.splash-header {
+  background: var(--card-bg);
+  margin: 0 12px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 24px;
+  text-align: center;
+  margin-top: 24px;
+}
+.splash-emoji { font-size: 56px; margin-bottom: 12px; animation: bounceIn 0.8s ease; display: inline-block; }
+.splash-title { font-size: 22px; font-weight: 800; color: var(--text-primary); margin-bottom: 6px; }
+.splash-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 3px; }
+.splash-desc { font-size: 12px; color: var(--text-light); margin-bottom: 20px; line-height: 1.6; }
+.divider { width: 36px; height: 2px; background: var(--primary); border-radius: 1px; margin: 12px auto; opacity: 0.4; }
+.q-tag { display: inline-block; padding: 3px 14px; background: rgba(45,55,72,0.06); color: var(--primary); border-radius: 20px; font-size: 11px; font-weight: 600; margin-bottom: 14px; }
+.btn-start { display: inline-block; padding: 13px 44px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 50px; font-size: 16px; font-weight: 700; cursor: pointer; transition: all var(--transition); box-shadow: 0 4px 16px rgba(0,0,0,0.15); letter-spacing: 0.5px; }
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+.btn-start:active { transform: scale(0.96); }
+.disclaimer-small { font-size: 10px; color: var(--text-light); margin-top: 14px; opacity: 0.6; }
+
+/* ============================================================
+   答题页
+   ============================================================ */
+.progress-wrap { width: 100%; height: 3px; background: var(--border); border-radius: 2px; margin-bottom: 20px; overflow: hidden; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); border-radius: 2px; transition: width 0.4s ease; }
+.question-counter { font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 6px; }
+.question-text { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: 24px; line-height: 1.5; }
+.options-list { display: flex; flex-direction: column; gap: 9px; }
+.option-btn { display: block; width: 100%; padding: 14px 16px; background: #F9FAFB; border: 2px solid var(--border); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--text-primary); cursor: pointer; transition: all var(--transition); text-align: left; font-family: inherit; }
+.option-btn:hover { border-color: var(--primary); background: rgba(45,55,72,0.02); transform: translateX(3px); }
+.option-btn:active { transform: scale(0.98); }
+.option-btn.selected { border-color: var(--primary); background: rgba(45,55,72,0.04); color: var(--primary); font-weight: 600; }
+.option-btn .option-letter { display: inline-block; width: 24px; height: 24px; line-height: 24px; text-align: center; background: var(--border); border-radius: 50%; margin-right: 10px; font-size: 11px; font-weight: 700; color: var(--text-secondary); transition: all var(--transition); }
+.option-btn.selected .option-letter { background: var(--primary); color: #fff; }
+.btn-next { display: none; width: 100%; padding: 13px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 50px; font-size: 15px; font-weight: 700; cursor: pointer; margin-top: 20px; transition: all var(--transition); box-shadow: 0 4px 14px rgba(0,0,0,0.12); }
+.btn-next.visible { display: block; animation: fadeSlideUp 0.3s ease; }
+.btn-next:hover { transform: translateY(-2px); }
+
+/* ============================================================
+   计算动画
+   ============================================================ */
+.calculating { text-align: center; padding: 40px 20px; }
+.calc-emoji { font-size: 40px; animation: pulse 1s infinite; }
+.calc-text { font-size: 14px; color: var(--text-secondary); margin-top: 12px; }
+.calc-dots { display: flex; gap: 4px; justify-content: center; margin-top: 10px; }
+.calc-dots span { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); animation: pulse 1.2s infinite; opacity: 0.3; }
+.calc-dots span:nth-child(2) { animation-delay: 0.2s; }
+.calc-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ============================================================
+   模块一：诊断报告卡
+   ============================================================ */
+.diagnosis-header { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.diagnosis-header .diag-icon { font-size: 20px; }
+.diagnosis-header h3 { font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.diag-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.diag-row:last-child { border-bottom: none; }
+.diag-label { width: 80px; font-size: 13px; color: var(--text-light); flex-shrink: 0; }
+.diag-value { font-size: 14px; font-weight: 700; color: var(--text-primary); }
+.diag-value.risk-high { color: var(--accent); }
+.diag-value.risk-mid { color: #DD6B20; }
+.diag-value.risk-low { color: #38A169; }
+.score-divider { width: 100%; height: 1px; background: var(--border); margin: 4px 0; }
+
+/* ============================================================
+   模块二：6维进度条（替代雷达图）
+   ============================================================ */
+.dimensions-list { margin-top: 12px; }
+.dim-item { display: flex; align-items: center; margin-bottom: 14px; }
+.dim-item:last-child { margin-bottom: 0; }
+.dim-name { width: 70px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; text-align: right; margin-right: 12px; }
+.dim-bar-wrap { flex: 1; height: 8px; background: #EDF2F7; border-radius: 4px; overflow: hidden; position: relative; }
+.dim-bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease 0.3s; }
+.dim-score { width: 36px; font-size: 12px; font-weight: 700; color: var(--text-primary); text-align: right; margin-left: 8px; }
+
+/* ============================================================
+   模块三：深度分析
+   ============================================================ */
+.analysis-block { margin-bottom: 18px; }
+.analysis-block:last-child { margin-bottom: 0; }
+.analysis-label { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+.analysis-label .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.dot-green { background: #38A169; }
+.dot-red { background: var(--accent); }
+.dot-blue { background: #3182CE; }
+.analysis-text { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
+.warning-box { background: #FFF5F5; border-left: 3px solid var(--accent); padding: 10px 14px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 8px 0; }
+.warning-box p { font-size: 13px; color: #C53030; line-height: 1.6; }
+.blind-card { background: #F7FAFC; border-radius: var(--radius-sm); padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); }
+.blind-card:last-child { margin-bottom: 0; }
+.blind-card-title { font-size: 13px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.blind-card-text { font-size: 12px; color: var(--text-secondary); line-height: 1.7; }
+
+/* ============================================================
+   模块四：未来推演
+   ============================================================ */
+.projection-warn { background: #FFF5F5; border-radius: var(--radius-sm); padding: 14px; margin-bottom: 14px; }
+.projection-warn h4 { font-size: 13px; color: var(--accent); margin-bottom: 8px; }
+.projection-warn .warn-item { font-size: 12px; color: var(--text-secondary); margin-bottom: 5px; padding-left: 12px; position: relative; }
+.projection-warn .warn-item::before { content: '⚠'; position: absolute; left: -2px; font-size: 11px; }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.compare-col { border-radius: var(--radius-sm); padding: 14px; }
+.compare-col.bad { background: #FFF5F5; border: 1px solid #FED7D7; }
+.compare-col.good { background: #F0FFF4; border: 1px solid #C6F6D5; }
+.compare-col h4 { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.compare-col.bad h4 { color: var(--accent); }
+.compare-col.good h4 { color: #38A169; }
+.compare-col p { font-size: 11px; color: var(--text-secondary); margin-bottom: 3px; line-height: 1.6; }
+
+/* ============================================================
+   模块五：问题来源
+   ============================================================ */
+.source-bars { margin: 8px 0 14px; }
+.source-item { display: flex; align-items: center; margin-bottom: 10px; }
+.source-name { width: 68px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
+.source-bar-wrap { flex: 1; height: 10px; background: #EDF2F7; border-radius: 5px; overflow: hidden; margin: 0 10px; }
+.source-bar-fill { height: 100%; border-radius: 5px; transition: width 1s ease 0.5s; }
+.source-pct { width: 36px; font-size: 12px; font-weight: 700; color: var(--text-primary); text-align: right; }
+.core-type-box { background: linear-gradient(135deg, #1A202C, #2D3748); color: #fff; border-radius: var(--radius-sm); padding: 18px; text-align: center; margin-top: 4px; }
+.core-type-name { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+.core-type-quote { font-size: 14px; opacity: 0.9; line-height: 1.7; margin-bottom: 6px; }
+.core-type-insight { font-size: 12px; opacity: 0.7; line-height: 1.6; font-style: italic; }
+
+/* ============================================================
+   模块六：行动路线图（时间线）
+   ============================================================ */
+.timeline { position: relative; padding-left: 28px; margin-top: 10px; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 2px; background: var(--border); }
+.timeline-item { position: relative; margin-bottom: 18px; animation: slideIn 0.5s ease forwards; opacity: 0; }
+.timeline-item:nth-child(2) { animation-delay: 0.2s; }
+.timeline-item:nth-child(3) { animation-delay: 0.4s; }
+.timeline-item:nth-child(4) { animation-delay: 0.6s; }
+.timeline-dot { position: absolute; left: -28px; top: 4px; width: 16px; height: 16px; border-radius: 50%; background: var(--primary); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--primary); }
+.timeline-week { font-size: 11px; color: var(--primary); font-weight: 700; margin-bottom: 2px; }
+.timeline-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 3px; }
+.timeline-action { font-size: 12px; color: var(--text-secondary); line-height: 1.6; }
+
+/* ============================================================
+   模块七：治愈收尾
+   ============================================================ */
+.report-end { text-align: center; padding: 32px 24px; background: var(--card-bg); margin: 0 12px 24px; border-radius: var(--radius); box-shadow: var(--shadow); }
+.report-end h2 { font-size: 18px; font-weight: 800; color: var(--text-primary); margin-bottom: 12px; }
+.report-end .ending-line { font-size: 14px; color: var(--text-secondary); line-height: 2; }
+.report-end .ending-line em { color: var(--accent); font-style: normal; }
+.btn-retry { display: inline-block; padding: 12px 36px; background: var(--card-bg); color: var(--primary); border: 2px solid var(--border); border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 16px; transition: all var(--transition); font-family: inherit; }
+.btn-retry:hover { background: #F7FAFC; border-color: var(--primary); }
+
+/* ============================================================
+   报告标题区
+   ============================================================ */
+.report-hero { text-align: center; padding: 28px 24px 20px; background: var(--card-bg); margin: 0 12px 12px; border-radius: var(--radius); box-shadow: var(--shadow); }
+.report-hero .hero-emoji { font-size: 48px; animation: bounceIn 0.6s ease; }
+.report-hero .hero-subtitle { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+
+/* ============================================================
+   屏幕切换
+   ============================================================ */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* Toast */
+.toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-120px); background: #1A202C; color: #fff; padding: 10px 22px; border-radius: 50px; font-size: 13px; font-weight: 600; z-index: 999; transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Responsive */
+@media (max-width: 380px) {
+  .card, .report-card { padding: 20px 16px; }
+  .splash-header { padding: 24px 16px; }
+  .splash-title { font-size: 19px; }
+  .question-text { font-size: 16px; }
+  .report-hero { padding: 22px 16px 16px; }
+  .diag-label { width: 65px; font-size: 11px; }
+  .dim-name { width: 58px; font-size: 11px; }
+  .source-name { width: 56px; font-size: 11px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <!-- ============================================================
+       开场页
+       ============================================================ -->
+  <div id="screen-splash" class="screen active">
+    <div class="splash-header">
+      <div class="splash-emoji" id="splashEmoji">📊</div>
+      <h1 class="splash-title" id="splashTitle">测试标题</h1>
+      <p class="splash-subtitle" id="splashSubtitle"></p>
+      <div class="divider"></div>
+      <p class="splash-desc" id="splashDesc"></p>
+      <div class="q-tag" id="qCountTag"></div>
+      <br>
+      <button class="btn-start" onclick="startTest()">✨ 开始测试</button>
+      <p class="disclaimer-small">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       答题页
+       ============================================================ -->
+  <div id="screen-question" class="screen">
+    <div class="card">
+      <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="question-counter" id="questionCounter">1 / 8</div>
+      <h2 class="question-text" id="questionText"></h2>
+      <div class="options-list" id="optionsList"></div>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()">下一题 →</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       计算中
+       ============================================================ -->
+  <div id="screen-calculating" class="screen">
+    <div class="card">
+      <div class="calculating">
+        <div class="calc-emoji">🔬</div>
+        <p class="calc-text">正在生成你的专属诊断报告…</p>
+        <div class="calc-dots"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       报告结果页（7大模块）
+       ============================================================ -->
+  <div id="screen-result" class="screen">
+    <div id="report-root"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ################################################################
+// 🎨 测试配置区
+// ################################################################
+const TEST_CONFIG = {
+  title: '你的职场诊断报告',
+  subtitle: '25道题 · 全面诊断你的职业生涯状态',
+  description: '你的职场状态健康吗？是燃烧殆尽还是温水煮蛙？25道题，系统诊断你的职业生命周期，给你一份专属的职场诊断报告。',
+  emoji: '📊',
+  themeColor: '#2D3748',
+  accentColor: '#E53E3E',
+
+  questions: [
+    { text: '周一早上闹钟响了，你的第一反应是？',
+      options: [
+        { text: '立刻起床，新的一周冲！', score: 4 },
+        { text: '还行，正常起床准备上班', score: 3 },
+        { text: '再睡5分钟...艰难爬起来', score: 2 },
+        { text: '想请假，不想面对', score: 1 } ] },
+    { text: '你对现在工作的感受最接近？',
+      options: [
+        { text: '充满激情，每天都有新挑战', score: 4 },
+        { text: '还可以，偶尔有成就感', score: 3 },
+        { text: '就那样，每天重复差不多的事', score: 2 },
+        { text: '毫无感觉，纯粹为了工资', score: 1 } ] },
+    { text: '下班后的状态是？',
+      options: [
+        { text: '还有精力学习/运动/社交', score: 4 },
+        { text: '有点累，但还能做点自己的事', score: 3 },
+        { text: '精疲力尽，瘫在沙发上刷手机', score: 2 },
+        { text: '连刷手机的力气都没有', score: 1 } ] },
+    { text: '你多久没有过"今天真开心"的感觉了？',
+      options: [
+        { text: '经常有，昨天就有', score: 4 },
+        { text: '一周总有那么一两次', score: 3 },
+        { text: '上个月好像有过...', score: 2 },
+        { text: '想不起来了', score: 1 } ] },
+    { text: '周末你会主动想工作的事吗？',
+      options: [
+        { text: '会，因为真的喜欢', score: 4 },
+        { text: '偶尔想到，但不焦虑', score: 3 },
+        { text: '会想，带着隐隐的烦躁', score: 2 },
+        { text: '绝对不想，一想到就难受', score: 1 } ] },
+    { text: '你感觉自己在成长吗？',
+      options: [
+        { text: '是的，每个月都能感到进步', score: 4 },
+        { text: '有成长，但速度慢下来了', score: 3 },
+        { text: '很久没学到新东西了', score: 2 },
+        { text: '不但没成长，感觉在退步', score: 1 } ] },
+    { text: '同事聚餐时聊到工作，你？',
+      options: [
+        { text: '有很多有趣的事情可以分享', score: 4 },
+        { text: '能参与讨论，有自己看法', score: 3 },
+        { text: '基本沉默，没什么想说的', score: 2 },
+        { text: '想吐槽，但忍住了', score: 1 } ] },
+    { text: '你上一次认真思考"我到底想做什么"是什么时候？',
+      options: [
+        { text: '不需要思考，我很清楚', score: 4 },
+        { text: '最近有想过，方向明确', score: 3 },
+        { text: '想过，但没有答案', score: 2 },
+        { text: '不敢想，想了会慌', score: 1 } ] },
+    { text: '工作压力让你出现过哪些身体信号？',
+      options: [
+        { text: '没什么影响，身体很好', score: 4 },
+        { text: '偶尔失眠或头疼', score: 3 },
+        { text: '经常失眠/胃疼/肩颈僵硬', score: 2 },
+        { text: '出现了明显的健康问题', score: 1 } ] },
+    { text: '你的朋友圈/社交圈里聊工作的频率？',
+      options: [
+        { text: '经常聊，有丰富的职场话题', score: 4 },
+        { text: '偶尔聊到，比较正常', score: 3 },
+        { text: '几乎不提工作相关', score: 2 },
+        { text: '朋友们都说我总是吐槽工作', score: 1 } ] },
+    { text: '你愿意为现在的工作付出额外努力吗？',
+      options: [
+        { text: '愿意，因为能看到价值和回报', score: 4 },
+        { text: '重要的事会多付出一些', score: 3 },
+        { text: '不太愿意，付出和回报不成比例', score: 2 },
+        { text: '完全不愿意，能少做就少做', score: 1 } ] },
+    { text: '你对公司/行业的未来有信心吗？',
+      options: [
+        { text: '非常有信心，前景光明', score: 4 },
+        { text: '谨慎乐观，应该没问题', score: 3 },
+        { text: '不太乐观，但还能待', score: 2 },
+        { text: '完全没信心，感觉在沉船', score: 1 } ] },
+    { text: '你觉得自己在职场的核心竞争力是？',
+      options: [
+        { text: '很清楚，而且还在持续增强', score: 4 },
+        { text: '大概知道，但需要提升', score: 3 },
+        { text: '不太确定自己有什么优势', score: 2 },
+        { text: '感觉自己随时可被替代', score: 1 } ] },
+    { text: '最近一个月，有多少天你是因为"责任"而非"热情"去上班的？',
+      options: [
+        { text: '几乎没有，工作本身就是动力', score: 4 },
+        { text: '一半一半吧', score: 3 },
+        { text: '大部分时间都是靠责任撑着', score: 2 },
+        { text: '每天都是硬着头皮去的', score: 1 } ] },
+    { text: '工作中遇到困难时，你的心态是？',
+      options: [
+        { text: '兴奋！解决问题的机会来了', score: 4 },
+        { text: '正常面对，想办法处理', score: 3 },
+        { text: '烦躁，怎么又是这种事', score: 2 },
+        { text: '无所谓了，反正就这样', score: 1 } ] },
+    { text: '你上一次因为工作而有成就感是什么时候？',
+      options: [
+        { text: '最近一周就有！', score: 4 },
+        { text: '上个月的事', score: 3 },
+        { text: '半年左右了...', score: 2 },
+        { text: '记不清了', score: 1 } ] },
+    { text: '你的生活里有工作之外的重心吗？',
+      options: [
+        { text: '有多个：爱好/健身/社交/学习', score: 4 },
+        { text: '有一两个副业或爱好', score: 3 },
+        { text: '有一点，但投入时间和精力很少', score: 2 },
+        { text: '没有，除了工作就是休息', score: 1 } ] },
+    { text: '如果有人给你一个完全不同的职业机会，你会？',
+      options: [
+        { text: '不感兴趣，现在很好', score: 4 },
+        { text: '会了解一下，但未必换', score: 3 },
+        { text: '认真考虑，可能是个出口', score: 2 },
+        { text: '马上就想答应', score: 1 } ] },
+    { text: '你和同事/上级的关系如何？',
+      options: [
+        { text: '很好，有信任和默契', score: 4 },
+        { text: '还可以，正常协作没问题', score: 3 },
+        { text: '一般，只是工作上必要的交集', score: 2 },
+        { text: '不太好，有摩擦或隔阂', score: 1 } ] },
+    { text: '你觉得自己的薪资和付出匹配吗？',
+      options: [
+        { text: '匹配，甚至超出预期', score: 4 },
+        { text: '基本合理', score: 3 },
+        { text: '偏低，但能接受', score: 2 },
+        { text: '严重不匹配，长期失衡', score: 1 } ] },
+    { text: '你上一次更新简历/看招聘信息是什么时候？',
+      options: [
+        { text: '很久没看了，不需要', score: 4 },
+        { text: '几个月前随便看看', score: 3 },
+        { text: '最近在看', score: 2 },
+        { text: '每天都在刷招聘App', score: 1 } ] },
+    { text: '你的家人/伴侣如何评价你的工作状态？',
+      options: [
+        { text: '觉得我很热爱我的工作', score: 4 },
+        { text: '觉得还行，正常', score: 3 },
+        { text: '总说我太累了，应该休息', score: 2 },
+        { text: '劝我换工作很久了', score: 1 } ] },
+    { text: '你觉得自己在付出，但有人看到吗？',
+      options: [
+        { text: '被充分认可，经常受到肯定', score: 4 },
+        { text: '偶尔会被注意到', score: 3 },
+        { text: '基本没人注意', score: 2 },
+        { text: '没人看见，还很委屈', score: 1 } ] },
+    { text: '如果明天突然中彩票财务自由，你还会做现在的工作吗？',
+      options: [
+        { text: '会！不是为了钱', score: 4 },
+        { text: '可能会换个方式做', score: 3 },
+        { text: '大概率不会了', score: 2 },
+        { text: '绝对立刻辞职', score: 1 } ] },
+    { text: '总的来说，你给自己的职场状态打几分？',
+      options: [
+        { text: '8-10分，我很满意', score: 4 },
+        { text: '6-7分，还行但可以更好', score: 3 },
+        { text: '4-5分，问题不少', score: 2 },
+        { text: '1-3分，已经到谷底了', score: 1 } ] }
+  ],
+
+  results: [
+    {
+      title: '🔥 燃烧殆尽型',
+      emoji: '🔥',
+      range: [84, 100],
+      color: '#E53E3E',
+      report: {
+        diagnosis: { phase: '职业燃烧期', risk: '高风险', core: '过度付出型', secondary: '边界缺失型' },
+        dimensions: { workMatch: 90, growth: 15, balance: 5, energy: 5, future: 25, control: 10 },
+        analysis: {
+          hiddenStrength: '你拥有极强的责任感——不是每个人都愿意为工作付出这么多。你的执行力是团队里最可靠的存在，也是最容易被依赖的那个人。这份热情本身没有错，错的是没人提醒你：你不需要用燃烧自己来证明价值。',
+          worstAction: '继续透支自己，告诉自己"忙完这一阵就好了"——但那一阵永远不会结束。',
+          blindSpots: [
+            { title: '把"忙"当成了"重要"', text: '你像一台运转了太久的发动机——从不停歇，却忘了问一句：我到底在往哪里开？忙不等于有价值，重要的事才值得你燃烧。' },
+            { title: '用工作填补生活', text: '你的世界里只有工作这一根柱子。当这一根柱子出问题时，整个人生都会倒塌。真正稳固的人生需要多根支柱：兴趣、关系、健康、成长。' },
+            { title: '忽视了身体的求救信号', text: '失眠、胃疼、肩颈僵硬——这些都是你的身体在喊停。你总说"熬过去就好了"，但身体不会永远给你机会说这句话。' }
+          ]
+        },
+        projection: {
+          warning: { '精力状态': '持续透支，工作效率反而下降', '身体状态': '小毛病累积成大问题', '情绪状态': '从"累"变成"倦"，再变成"麻木"', '人生状态': '最终出现职业倦怠综合征——不是不想工作，是恐惧工作' },
+          keepStatus: ['× 继续透支', '× 继续硬撑', '× 继续忽视身体', '× 人生越来越窄', '× 最终全面崩溃'],
+          startAdjust: ['✓ 建立工作边界', '✓ 恢复身体状态', '✓ 重建生活系统', '✓ 分散人生重心', '✓ 重新找回自己']
+        },
+        source: {
+          dimensions: [
+            { name: '工作过度', pct: 45 },
+            { name: '生活空白', pct: 25 },
+            { name: '身体透支', pct: 20 },
+            { name: '价值迷失', pct: 10 }
+          ],
+          coreType: '燃烧殆尽型',
+          coreQuote: '你不是不够努力。恰恰相反——你太努力了，努力到忘了自己也需要被照顾。',
+          coreInsight: '真正的职业健康，不是能跑多快，而是能跑多久。你现在需要的是停下来，给发动机做一次深度保养。'
+        },
+        timeline: [
+          { week: 1, title: '按下暂停键', action: '本周给自己放一天真正的假——不看工作消息、不处理工作事务。感受"停下来"是什么感觉。' },
+          { week: 2, title: '找出消耗源', action: '每天记录一件让你最疲惫的事。一周后，你会看到一个清晰的"能量黑洞"清单。' },
+          { week: 3, title: '建立边界感', action: '学会说"不"：拒绝一个不必要的加班、一次没意义的社交、一份超出精力范围的额外任务。' },
+          { week: 4, title: '重建设计人生', action: '画出你理想的一周：工作、休息、兴趣、运动、社交各占多少？然后从一个小改变开始。' }
+        ],
+        ending: { title: '你的诊断已完成', line1: '燃烧自己照亮别人，从来不是最优解。', line2: '真正值得你燃烧的，是你自己的人生。' }
+      }
+    },
+    {
+      title: '🌫️ 职业迷茫型',
+      emoji: '🌫️',
+      range: [67, 83],
+      color: '#DD6B20',
+      report: {
+        diagnosis: { phase: '职业迷茫期', risk: '中风险', core: '方向迷失型', secondary: '价值感缺失型' },
+        dimensions: { workMatch: 55, growth: 30, balance: 45, energy: 40, future: 20, control: 25 },
+        analysis: {
+          hiddenStrength: '你对"意义"的敏感度很高——这其实是一种珍贵的天赋。那些不想太多的人随遇而安，而你一直在寻找方向，这本身就说明你对人生有更高的期待。迷茫不是弱点，是你在拒绝平庸。',
+          worstAction: '因为迷茫就完全停滞——不投简历、不学新技能、不尝试改变，等着"想清楚了再行动"。',
+          blindSpots: [
+            { title: '以为必须"想清楚"才能行动', text: '方向不是想出来的，是试出来的。你困在原地反复思考，却忘了当你开车看不清前路时，不是停在路边等雾散，而是打开车灯慢慢往前走。"走着走着，路就清晰了。"' },
+            { title: '把所有问题归因于工作', text: '换工作确实能解决一些问题，但有些东西跟工作无关——比如你的生活方式、你对自己的认知、你和内心的关系。这些不解决，换到哪都一样。' },
+            { title: '忽视自己已有的积累', text: '你总觉得自己"什么都不会"，但仔细想想，你有几年工作经验、有人脉、有行业认知、有项目经历。这些都不是从零开始——你站在你已经爬到的半山腰，而不是山脚。' }
+          ]
+        },
+        projection: {
+          warning: { '职业状态': '继续原地徘徊，竞争力缓慢下降', '心理状态': '迷茫感加深，开始自我怀疑', '机会成本': '错过转型窗口期', '风险': '最终陷入"将就"——随便找份工作，不再追求意义' },
+          keepStatus: ['× 继续等待方向', '× 继续自我怀疑', '× 继续不做改变', '× 竞争力持续下降', '× 最终接受将就'],
+          startAdjust: ['✓ 开始小步尝试', '✓ 盘点已有积累', '✓ 扩大信息输入', '✓ 建立新连接', '✓ 找到下一阶段方向']
+        },
+        source: {
+          dimensions: [
+            { name: '方向不清', pct: 40 },
+            { name: '自我怀疑', pct: 25 },
+            { name: '信息不足', pct: 20 },
+            { name: '恐惧尝试', pct: 15 }
+          ],
+          coreType: '方向迷失型',
+          coreQuote: '你不需要找到"正确答案"。你只需要找到"下一个值得试的方向"。',
+          coreInsight: '所有确定的方向，都是从不确定的探索开始的。迷茫不是终点，而是重定向前的GPS重新计算。'
+        },
+        timeline: [
+          { week: 1, title: '盘点你的资产', action: '写下你所有的技能、经验、人脉、资源、兴趣。不是"我缺什么"，而是"我已经有什么"。' },
+          { week: 2, title: '收集信息', action: '找3个不同行业/岗位的人聊一聊。不找工作，只收集信息。每人15分钟就够了。' },
+          { week: 3, title: '做一个小实验', action: '选一个可能感兴趣的方向，花2小时做一件相关的事。比如想转行写作，就写一篇短文发出去。' },
+          { week: 4, title: '制定探索计划', action: '从实验结果中，确定2-3个"值得进一步探索"的方向。不需要完美，只需要动起来。' }
+        ],
+        ending: { title: '你的诊断已完成', line1: '看不清方向不是你的错，是你在穿过森林的中途。', line2: '只要还在走，森林总会走出去。' }
+      }
+    },
+    {
+      title: '⚖️ 活法失衡型',
+      emoji: '⚖️',
+      range: [50, 66],
+      color: '#6B46C1',
+      report: {
+        diagnosis: { phase: '结构调整期', risk: '中风险', core: '活法失衡型', secondary: '生活单一型' },
+        dimensions: { workMatch: 60, growth: 40, balance: 20, energy: 35, future: 40, control: 30 },
+        analysis: {
+          hiddenStrength: '你对工作有清晰的责任感和执行力——能把事情做好是你被认可的原因。但你把太多精力押在了"被认可"上，而忽略了"让自己真的过得好"。你像一个只有一条桌腿的桌子——工作这条腿再粗，也撑不起整个人生。',
+          worstAction: '把"换工作"当成唯一的解决方案——换个环境并不会自动帮你找回失去的生活。',
+          blindSpots: [
+            { title: '人生结构太单一', text: '健康的人生需要多根支柱：工作、学习、兴趣、关系、健康、体验。但你目前可能只有"工作"这一根。当这根支柱晃动时，你整个人生都会随之剧烈摇摆。' },
+            { title: '把"休息"当成"浪费时间"', text: '你已经不会休息了。周末躺着刷手机不是休息，是在逃避。真正的休息是能让身心真正恢复的事：散步、看书、做饭、陪家人——这些才是充电，不是浪费。' },
+            { title: '忽视了自己"想要什么"', text: '你的生活被"应该做什么"填满——应该加班、应该努力、应该存钱。但你上一次问自己"我想要什么"是什么时候？你习惯了为生活奔命，却忘了生活本身是什么滋味。' }
+          ]
+        },
+        projection: {
+          warning: { '生活状态': '生活感持续下降，觉得活着就是上班+睡觉', '心理状态': '出现"存在性疲惫"——不是累，是不知道为什么而活', '关系状态': '与家人朋友越来越疏远', '风险': '最终可能出现轻微抑郁倾向' },
+          keepStatus: ['× 继续为工作而活', '× 生活越来越窄', '× 越来越想逃', '× 失去生活的实感', '× 陷入存在性危机'],
+          startAdjust: ['✓ 重建生活结构', '✓ 恢复兴趣爱好', '✓ 建立生活重心', '✓ 重构人生比例', '✓ 重新找到"活着"的感觉']
+        },
+        source: {
+          dimensions: [
+            { name: '工作重心过大', pct: 35 },
+            { name: '生活体验贫乏', pct: 30 },
+            { name: '自我需求缺失', pct: 20 },
+            { name: '人生结构失衡', pct: 15 }
+          ],
+          coreType: '活法失衡型',
+          coreQuote: '你真正想换的，可能不是工作——而是现在这套人生运行方式。',
+          coreInsight: '当你的生活只剩下工作这一件事时，任何一点工作上的波动都会成为人生级别的危机。你需要重建你的"人生结构"。'
+        },
+        timeline: [
+          { week: 1, title: '找回人生记录', action: '每天记录一件"今天让我觉得活着真好"的事。如果没有，就创造一件——一杯好咖啡、一场日落、一段好音乐。' },
+          { week: 2, title: '恢复兴趣系统', action: '重新拾起一件"以前喜欢但后来放弃"的事。哪怕只是每周花30分钟在上面。' },
+          { week: 3, title: '建立第二重心', action: '在工作之外，培养一个"不需要有用但你喜欢"的兴趣。不求精进，只求过程中有快乐。' },
+          { week: 4, title: '重构人生比例', action: '画一个饼图：你的理想人生中，工作/成长/兴趣/关系/健康各占多少？然后从这周开始，朝着这个比例调整。' }
+        ],
+        ending: { title: '你的诊断已完成', line1: '很多问题，不是因为你不够努力。', line2: '而是你已经走到了需要重新调整人生结构的阶段。' }
+      }
+    },
+    {
+      title: '🫙 温水煮蛙型',
+      emoji: '🫙',
+      range: [34, 49],
+      color: '#3182CE',
+      report: {
+        diagnosis: { phase: '温水区', risk: '中低风险', core: '舒适停滞型', secondary: '成长停滞型' },
+        dimensions: { workMatch: 50, growth: 10, balance: 70, energy: 45, future: 15, control: 50 },
+        analysis: {
+          hiddenStrength: '你最大的优势是"稳定"——你能在熟悉的岗位上持续输出，是团队里的定海神针。你不会制造麻烦，你让人放心。但问题也在这里：太放心了，放心到你自己都忘了——你值得更好的。',
+          worstAction: '告诉自己"其实现在也挺好的"——然后用这句话拖一年、两年、五年。',
+          blindSpots: [
+            { title: '舒适区不是安全区', text: '你以为待在舒适区是安全的。但在快速变化的时代，不成长就是最大的危险。今天让你舒服的工作，三年后可能就不存在了。温水很舒服，但青蛙就是这么熟的。' },
+            { title: '低估了自己的潜力', text: '你已经很久没有挑战过自己了，久到忘了自己其实能做成更多事情。你不是没有能力，你只是太久没用，肌肉萎缩了。' },
+            { title: '误把"不焦虑"当成"没问题"', text: '不焦虑不等于没问题。可能只是你已经适应了低期待——对工作没有热情、没有成长、没有成就感，但你觉得"还行"。这不是没问题，是问题已经变成了背景音。' }
+          ]
+        },
+        projection: {
+          warning: { '职业状态': '技能缓慢贬值，市场竞争力下降', '心理状态': '从"还行"变成"就这样吧"', '关系状态': '慢慢变得消极，影响身边人', '风险': '5年后突然发现，同龄人已经远远超过自己' },
+          keepStatus: ['× 继续待在舒适区', '× 技能持续贬值', '× 机会慢慢溜走', '× 越来越不敢改变', '× 温水变开水'],
+          startAdjust: ['✓ 开始学习新技能', '✓ 设定小挑战目标', '✓ 扩大职业视野', '✓ 建立成长节奏', '✓ 重新找回激情']
+        },
+        source: {
+          dimensions: [
+            { name: '舒适惯性', pct: 40 },
+            { name: '成长停滞', pct: 30 },
+            { name: '目标缺失', pct: 20 },
+            { name: '外界刺激不足', pct: 10 }
+          ],
+          coreType: '温水煮蛙型',
+          coreQuote: '不是你不够好，是你已经太久没有给自己设立"够不到的目标"了。',
+          coreInsight: '舒适的代价，是未来你回头看时发现自己停留在原地——而世界已经走了很远。成长不是冲刺，但不能停下来。'
+        },
+        timeline: [
+          { week: 1, title: '打破惯性', action: '这周做一件"平时不会做"的事。比如下班后去听一场讲座、学一个在线课程的第一章、去见一个不同行业的朋友。' },
+          { week: 2, title: '设定一个挑战', action: '选一个你"觉得有难度但有可能做到"的小目标。比如：7天读完一本书、学完一门2小时的在线课、写一篇行业观察。' },
+          { week: 3, title: '看看外面的世界', action: '花1小时浏览招聘网站——不是要跳槽，是看看"现在的市场需要什么人"。更新你的认知地图。' },
+          { week: 4, title: '制定成长计划', action: '确定未来3个月你想提升的1-2个技能。不需要多宏大，只需要一个明确的"下一步"。' }
+        ],
+        ending: { title: '你的诊断已完成', line1: '舒服的感觉不一定是好事。', line2: '今天让你舒服的东西，明天可能让你后悔。开始动起来吧。' }
+      }
+    },
+    {
+      title: '💔 价值危机型',
+      emoji: '💔',
+      range: [25, 33],
+      color: '#A0AEC0',
+      report: {
+        diagnosis: { phase: '价值危机期', risk: '高风险', core: '意义枯竭型', secondary: '职业倦怠型' },
+        dimensions: { workMatch: 15, growth: 5, balance: 20, energy: 10, future: 5, control: 5 },
+        analysis: {
+          hiddenStrength: '你能在如此低的状态下仍然坚持到现在——这本身就证明了你的坚韧。很多人早就崩溃了，而你还在。但坚韧不是用来承受无止境消耗的——你的韧性值得用在更好的地方。',
+          worstAction: '放弃寻找出口，觉得"算了，人生就这样了"——然后彻底躺平。',
+          blindSpots: [
+            { title: '把"绝望感"当成了"真相"', text: '你现在的状态下看到的世界，是加了灰色滤镜的。不是世界真的这么灰，是你的状态让你只能看到灰色。先修复滤镜，再判断世界。' },
+            { title: '孤立自己拒绝帮助', text: '你已经很久没有跟别人说过真实感受了。你怕给别人添麻烦，怕显得脆弱。但一个人扛不住的重量，两个人就能分担。你需要被看见。' },
+            { title: '忘记了"过去的自己"', text: '你也曾经有过热情和梦想。那个你还在，只是被太多失望和疲惫压在了最底下。你不是一直这样的，你只是被消耗太久了。' }
+          ]
+        },
+        projection: {
+          warning: { '心理状态': '抑郁风险显著上升', '职业状态': '可能无法正常工作', '关系状态': '与所有人渐行渐远', '紧迫度': '需要立即采取行动，这不是"再等等"的阶段' },
+          keepStatus: ['× 继续自我封闭', '× 继续硬扛不求助', '× 风险持续恶化', '× 生活全面崩塌'],
+          startAdjust: ['✓ 接受现状不是终点', '✓ 开始寻求帮助', '✓ 逐步恢复能量', '✓ 重新找到意义感', '✓ 一点点重建人生']
+        },
+        source: {
+          dimensions: [
+            { name: '意义感缺失', pct: 35 },
+            { name: '长期消耗', pct: 30 },
+            { name: '自我封闭', pct: 20 },
+            { name: '缺乏支持', pct: 15 }
+          ],
+          coreType: '价值危机型',
+          coreQuote: '不是你的问题。是你被困在了一个消耗你的环境里太久，久到忘记了自己原本是什么样的人。',
+          coreInsight: '你现在需要的不是"更努力"，而是"被理解"。你已经很累了，不需要再给自己施加更多压力。先停下来，然后一点点找回自己。'
+        },
+        timeline: [
+          { week: 1, title: '允许自己停下来', action: '给自己一个"什么都不要求"的缓冲期。不给自己定任何目标，只需要：按时吃饭、保证睡眠、每天出门走10分钟。' },
+          { week: 2, title: '找人聊聊', action: '找一个你信任的人——朋友、家人、或专业心理咨询师。不需要"解决问题"，只需要把压在你心里的东西说出来。' },
+          { week: 3, title: '记录一件好事', action: '每天睡觉前，写下一件"今天让我感觉还不错"的事。可以很小——一杯热茶、窗外的好天气、陌生人的微笑。这是在重新训练你的大脑看到光亮。' },
+          { week: 4, title: '做一个微小决定', action: '选一个"你想改变的小事"——换一个上班路线、中午换一家餐厅、周末去一个没去过的地方。从小变化中找回对自己的掌控感。' }
+        ],
+        ending: { title: '你的诊断已完成', line1: '走到这里不是你的失败。', line2: '是你终于诚实面对自己了——这才是真正的勇敢。接下来，慢慢来。' }
+      }
+    }
+  ],
+
+  disclaimer: '纯趣味测试，非科学评估 · 仅供娱乐 · 如有严重心理困扰请寻求专业帮助',
+  shareText: '我刚测了「职场诊断报告」，结果太真实了！你是燃烧殆尽型还是温水煮蛙型？来测测看👉',
+};
+
+// ################################################################
+// ⚙️ 测试引擎
+// ################################################################
+let currentQuestion = 0;
+let scores = [];
+
+function initConfig() {
+  const cfg = TEST_CONFIG;
+  document.title = cfg.title;
+  document.querySelector('meta[name="description"]').content = cfg.description || cfg.title;
+  const root = document.documentElement;
+  root.style.setProperty('--primary', cfg.themeColor);
+  root.style.setProperty('--accent', cfg.accentColor);
+  root.style.setProperty('--primary-dark', adjustColor(cfg.themeColor, -15));
+  
+  document.getElementById('splashEmoji').textContent = cfg.emoji || '📊';
+  document.getElementById('splashTitle').textContent = cfg.title;
+  document.getElementById('splashSubtitle').textContent = cfg.subtitle || '';
+  document.getElementById('splashDesc').textContent = cfg.description || '';
+  document.getElementById('qCountTag').textContent = `共 ${cfg.questions.length} 题 · 约2分钟`;
+}
+
+function adjustColor(hex, amount) {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.max(0, Math.min(255, ((num >> 16) & 0xFF) + amount));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xFF) + amount));
+  const b = Math.max(0, Math.min(255, (num & 0xFF) + amount));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screenId).classList.add('active');
+}
+
+function startTest() {
+  currentQuestion = 0; scores = [];
+  showScreen('question'); renderQuestion();
+}
+
+function renderQuestion() {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+  const total = cfg.questions.length;
+  document.getElementById('progressBar').style.width = ((currentQuestion) / total * 100) + '%';
+  document.getElementById('questionCounter').textContent = `${currentQuestion + 1} / ${total}`;
+  document.getElementById('questionText').textContent = q.text;
+  document.getElementById('optionsList').innerHTML = q.options.map((opt, i) => {
+    const letter = String.fromCharCode(65 + i);
+    return `<button class="option-btn" onclick="selectOption(${i}, this)" data-index="${i}"><span class="option-letter">${letter}</span>${opt.text}</button>`;
+  }).join('');
+  document.getElementById('btnNext').classList.remove('visible');
+  const card = document.querySelector('#screen-question .card');
+  card.style.animation = 'none'; card.offsetHeight; card.style.animation = 'fadeSlideUp 0.4s ease';
+}
+
+function selectOption(index, btn) {
+  const q = TEST_CONFIG.questions[currentQuestion];
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  scores[currentQuestion] = q.options[index].score;
+  const nextBtn = document.getElementById('btnNext');
+  nextBtn.classList.add('visible');
+  nextBtn.textContent = currentQuestion < TEST_CONFIG.questions.length - 1 ? '下一题 →' : '查看诊断报告 ✨';
+}
+
+function nextQuestion() {
+  if (scores[currentQuestion] === undefined) { showToast('请先选择一个选项哦~'); return; }
+  currentQuestion++;
+  if (currentQuestion < TEST_CONFIG.questions.length) { renderQuestion(); } else { showResult(); }
+}
+
+function showResult() {
+  const cfg = TEST_CONFIG;
+  const totalScore = scores.reduce((a, b) => a + b, 0);
+  let r = cfg.results[0];
+  for (const res of cfg.results) { if (totalScore >= res.range[0] && totalScore <= res.range[1]) { r = res; break; } }
+  
+  showScreen('calculating');
+  setTimeout(() => {
+    showScreen('result');
+    renderReport(r);
+  }, 1500);
+}
+
+// ################################################################
+// 📋 报告渲染引擎
+// ################################################################
+function renderReport(result) {
+  const R = result.report;
+  const D = R.diagnosis;
+  const dims = R.dimensions;
+  const dimNames = ['工作匹配', '成长活跃', '生活平衡', '能量健康', '未来期待', '人生掌控'];
+  const dimValues = [dims.workMatch, dims.growth, dims.balance, dims.energy, dims.future, dims.control];
+  const dimColors = ['#2B6CB0', '#38A169', '#DD6B20', '#E53E3E', '#6B46C1', '#2D3748'];
+  
+  const riskClass = D.risk.includes('高') ? 'risk-high' : D.risk.includes('中') ? 'risk-mid' : 'risk-low';
+  
+  const html = `
+    <!-- 报告顶部 -->
+    <div class="report-hero">
+      <div class="hero-emoji">${result.emoji || '📊'}</div>
+      <p class="hero-subtitle">你的专属诊断报告</p>
+    </div>
+
+    <!-- 模块一：诊断报告卡 -->
+    <div class="report-card">
+      <div class="diagnosis-header">
+        <span class="diag-icon">🛡️</span>
+        <h3>诊断报告卡</h3>
+      </div>
+      <div class="diag-row"><span class="diag-label">当前阶段</span><span class="diag-value">${D.phase}</span></div>
+      <div class="diag-row"><span class="diag-label">风险等级</span><span class="diag-value ${riskClass}">${D.risk}</span></div>
+      <div class="diag-row"><span class="diag-label">核心问题</span><span class="diag-value">${D.core}</span></div>
+      <div class="diag-row"><span class="diag-label">次级问题</span><span class="diag-value">${D.secondary}</span></div>
+    </div>
+
+    <!-- 模块二：6维状态分析 -->
+    <div class="report-card">
+      <div class="diagnosis-header"><span class="diag-icon">📊</span><h3>职业状态总览</h3></div>
+      <div class="dimensions-list">
+        ${dimNames.map((name, i) => `
+          <div class="dim-item">
+            <span class="dim-name">${name}</span>
+            <div class="dim-bar-wrap"><div class="dim-bar-fill" style="width:0%;background:${dimColors[i]}" data-w="${dimValues[i]}"></div></div>
+            <span class="dim-score">${dimValues[i]}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- 模块三：深度分析 -->
+    <div class="report-card">
+      <div class="diagnosis-header"><span class="diag-icon">🔬</span><h3>深度分析</h3></div>
+      <div class="analysis-block">
+        <div class="analysis-label"><span class="dot dot-green"></span>你的隐藏优势</div>
+        <div class="analysis-text">${R.analysis.hiddenStrength}</div>
+      </div>
+      <div class="analysis-block">
+        <div class="analysis-label"><span class="dot dot-red"></span>你现在最不该做什么</div>
+        <div class="warning-box"><p>${R.analysis.worstAction}</p></div>
+      </div>
+      <div class="analysis-block">
+        <div class="analysis-label"><span class="dot dot-blue"></span>你的三个盲区</div>
+        ${R.analysis.blindSpots.map((b, i) => `
+          <div class="blind-card">
+            <div class="blind-card-title">盲区${i+1}：${b.title}</div>
+            <div class="blind-card-text">${b.text}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- 模块四：未来推演 -->
+    <div class="report-card">
+      <div class="diagnosis-header"><span class="diag-icon">⚠️</span><h3>如果什么都不改变，6个月后</h3></div>
+      <div class="projection-warn">
+        <h4>📉 预警信号</h4>
+        ${R.projection.warning ? Object.entries(R.projection.warning).map(([k,v]) => 
+          `<div class="warn-item"><strong>${k}：</strong>${v}</div>`
+        ).join('') : `<div class="warn-item">${R.projection.warnSummary || '状态持续下滑，问题将进一步恶化'}</div>`}
+      </div>
+      ${R.projection.keepStatus ? `
+      <div class="compare-grid">
+        <div class="compare-col bad">
+          <h4>🚫 保持现状</h4>
+          ${R.projection.keepStatus.map(s => `<p>${s}</p>`).join('')}
+        </div>
+        <div class="compare-col good">
+          <h4>✅ 开始调整</h4>
+          ${R.projection.startAdjust.map(s => `<p>${s}</p>`).join('')}
+        </div>
+      </div>` : ''}
+    </div>
+
+    <!-- 模块五：问题来源 -->
+    <div class="report-card">
+      <div class="diagnosis-header"><span class="diag-icon">🎯</span><h3>你的问题来源</h3></div>
+      <div class="source-bars">
+        ${R.source.dimensions.map((d, i) => {
+          const sColors = ['#2B6CB0', '#38A169', '#DD6B20', '#E53E3E'];
+          return `
+          <div class="source-item">
+            <span class="source-name">${d.name}</span>
+            <div class="source-bar-wrap"><div class="source-bar-fill" style="width:0%;background:${sColors[i]||'#2D3748'}" data-w="${d.pct}"></div></div>
+            <span class="source-pct">${d.pct}%</span>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="core-type-box">
+        <div class="core-type-name">${R.source.coreType}</div>
+        <div class="core-type-quote">${R.source.coreQuote}</div>
+        <div class="core-type-insight">${R.source.coreInsight}</div>
+      </div>
+    </div>
+
+    <!-- 模块六：行动路线图 -->
+    <div class="report-card">
+      <div class="diagnosis-header"><span class="diag-icon">🗺️</span><h3>未来30天行动路线图</h3></div>
+      <div class="timeline">
+        ${R.timeline.map((t, i) => `
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-week">第${i+1}周</div>
+            <div class="timeline-title">${t.title}</div>
+            <div class="timeline-action">${t.action}</div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- 模块七：治愈收尾 -->
+    <div class="report-end">
+      <h2>${R.ending.title}</h2>
+      <p class="ending-line">${R.ending.line1}</p>
+      <p class="ending-line"><em>${R.ending.line2}</em></p>
+      <button class="btn-retry" onclick="restartTest()">🔄 重新诊断</button>
+      <p class="disclaimer-small" style="margin-top:10px;">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  `;
+  
+  document.getElementById('report-root').innerHTML = html;
+  
+  // 动画播放进度条
+  setTimeout(() => {
+    document.querySelectorAll('.dim-bar-fill[data-w]').forEach(b => {
+      b.style.width = b.getAttribute('data-w') + '%';
+    });
+    document.querySelectorAll('.source-bar-fill[data-w]').forEach(b => {
+      b.style.width = b.getAttribute('data-w') + '%';
+    });
+  }, 100);
+}
+
+function restartTest() {
+  showScreen('splash');
+}
+
+// Toast
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg; toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+initConfig();
+</script>
+</body>
+</html>
