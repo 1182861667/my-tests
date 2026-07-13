@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>你更适合大城市拼，还是小城市躺？</title>
+<meta name="description" content="25道题测出你的城市适配基因，看看你是都市野心家还是自然栖居者">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --primary: #6366F1;
+  --primary-dark: #4F46E5;
+  --bg-gradient: linear-gradient(135deg, #6366F1 0%, #14B8A6 100%);
+  --card-bg: #ffffff;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-light: #9CA3AF;
+  --shadow: 0 10px 40px rgba(0,0,0,0.12);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.15);
+  --radius: 20px;
+  --radius-sm: 12px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#app {
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  animation: fadeSlideUp 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeSlideDown {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(30px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.3); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.9); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 140px; height: 140px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.06;
+  pointer-events: none;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: -40px;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.splash-emoji { font-size: 64px; margin-bottom: 16px; animation: bounceIn 0.8s ease; display: inline-block; }
+.splash-title { font-size: 26px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px; line-height: 1.3; position: relative; z-index: 1; }
+.splash-subtitle { font-size: 14px; color: var(--text-secondary); margin-bottom: 4px; position: relative; z-index: 1; }
+.splash-desc { font-size: 13px; color: var(--text-light); margin-bottom: 24px; line-height: 1.6; position: relative; z-index: 1; }
+.divider { width: 40px; height: 3px; background: var(--primary); border-radius: 2px; margin: 0 auto 20px; opacity: 0.5; }
+.btn-start { display: inline-block; padding: 14px 48px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 50px; font-size: 17px; font-weight: 700; cursor: pointer; transition: all var(--transition); position: relative; z-index: 1; box-shadow: 0 4px 20px rgba(99,102,241,0.35); letter-spacing: 1px; }
+.btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(99,102,241,0.45); }
+.btn-start:active { transform: scale(0.96); }
+.disclaimer-small { font-size: 11px; color: var(--text-light); margin-top: 16px; position: relative; z-index: 1; opacity: 0.7; }
+.question-count-tag { display: inline-block; padding: 4px 16px; background: rgba(99,102,241,0.08); color: var(--primary); border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 12px; }
+
+.progress-wrap { width: 100%; height: 4px; background: #F3F4F6; border-radius: 2px; margin-bottom: 24px; overflow: hidden; position: relative; z-index: 1; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, var(--primary), var(--primary-dark)); border-radius: 2px; transition: width 0.4s ease; }
+
+.question-counter { font-size: 12px; color: var(--primary); font-weight: 700; margin-bottom: 8px; position: relative; z-index: 1; }
+.question-text { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-bottom: 28px; line-height: 1.5; position: relative; z-index: 1; }
+.options-list { display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1; }
+.option-btn { display: block; width: 100%; padding: 16px 20px; background: #F9FAFB; border: 2px solid #E5E7EB; border-radius: var(--radius-sm); font-size: 15px; font-weight: 500; color: var(--text-primary); cursor: pointer; transition: all var(--transition); text-align: left; font-family: inherit; position: relative; }
+.option-btn:hover { border-color: var(--primary); background: rgba(99,102,241,0.03); transform: translateX(4px); }
+.option-btn:active { transform: scale(0.98); }
+.option-btn.selected { border-color: var(--primary); background: rgba(99,102,241,0.06); color: var(--primary); font-weight: 600; }
+.option-btn .option-letter { display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; background: #E5E7EB; border-radius: 50%; margin-right: 12px; font-size: 12px; font-weight: 700; color: var(--text-secondary); transition: all var(--transition); }
+.option-btn.selected .option-letter { background: var(--primary); color: #fff; }
+
+.btn-next { display: none; width: 100%; padding: 14px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; border: none; border-radius: 50px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 24px; transition: all var(--transition); position: relative; z-index: 1; box-shadow: 0 4px 16px rgba(99,102,241,0.3); }
+.btn-next.visible { display: block; animation: fadeSlideUp 0.3s ease; }
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.4); }
+.btn-next:active { transform: scale(0.96); }
+
+.result-emoji { font-size: 72px; margin-bottom: 12px; animation: bounceIn 0.6s ease; }
+.result-type-badge { display: inline-block; padding: 6px 20px; border-radius: 50px; font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+.result-title { font-size: 24px; font-weight: 800; color: var(--text-primary); margin-bottom: 16px; position: relative; z-index: 1; }
+.result-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; margin-bottom: 20px; text-align: left; position: relative; z-index: 1; }
+.result-advice { text-align: left; background: rgba(99,102,241,0.04); border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 24px; position: relative; z-index: 1; border-left: 3px solid var(--primary); }
+.result-advice-title { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.result-advice ul { list-style: none; padding: 0; }
+.result-advice li { font-size: 13px; color: var(--text-secondary); padding: 4px 0; padding-left: 16px; position: relative; }
+.result-advice li::before { content: '•'; position: absolute; left: 0; color: var(--primary); font-weight: 700; }
+.result-actions { display: flex; gap: 10px; position: relative; z-index: 1; }
+.btn-retry, .btn-share { flex: 1; padding: 13px; border-radius: 50px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all var(--transition); border: none; font-family: inherit; letter-spacing: 0.5px; }
+.btn-retry { background: #F3F4F6; color: var(--text-secondary); }
+.btn-retry:hover { background: #E5E7EB; }
+.btn-share { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; box-shadow: 0 4px 16px rgba(99,102,241,0.3); }
+.btn-share:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.4); }
+.btn-share:active, .btn-retry:active { transform: scale(0.96); }
+
+.toast { position: fixed; top: 24px; left: 50%; transform: translateX(-50%) translateY(-120px); background: #1F2937; color: #fff; padding: 12px 24px; border-radius: 50px; font-size: 14px; font-weight: 600; z-index: 999; transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+.calculating { text-align: center; padding: 40px 20px; position: relative; z-index: 1; }
+.calc-emoji { font-size: 48px; animation: pulse 1s infinite; }
+.calc-text { font-size: 15px; color: var(--text-secondary); margin-top: 16px; }
+.calc-dots { display: flex; gap: 6px; justify-content: center; margin-top: 12px; }
+.calc-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--primary); animation: pulse 1.2s infinite; opacity: 0.3; }
+.calc-dots span:nth-child(2) { animation-delay: 0.2s; }
+.calc-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+.screen { display: none; }
+.screen.active { display: block; }
+
+@media (max-width: 380px) {
+  .card { padding: 24px 20px; }
+  .splash-title { font-size: 22px; }
+  .question-text { font-size: 18px; }
+  .result-title { font-size: 20px; }
+  .splash-emoji { font-size: 52px; }
+  .result-emoji { font-size: 56px; }
+}
+@media (min-width: 768px) {
+  .card { padding: 40px 36px; }
+  .splash-title { font-size: 28px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="screen-splash" class="screen active">
+    <div class="card">
+      <div class="splash-emoji" id="splashEmoji">🌆</div>
+      <h1 class="splash-title" id="splashTitle">你更适合大城市拼，还是小城市躺？</h1>
+      <p class="splash-subtitle" id="splashSubtitle">25道题，测出你的城市适配基因</p>
+      <div class="divider"></div>
+      <p class="splash-desc" id="splashDesc">大城市的机会和小城市的松弛，哪个才是你的灵魂归宿？25道题，测出你的城市适配基因，看看你该在哪片土壤生根发芽。</p>
+      <div class="question-count-tag" id="questionCountTag"></div>
+      <br>
+      <button class="btn-start" onclick="startTest()">✨ 开始测试</button>
+      <p class="disclaimer-small">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+
+  <div id="screen-question" class="screen">
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="question-counter" id="questionCounter">1 / 25</div>
+      <h2 class="question-text" id="questionText"></h2>
+      <div class="options-list" id="optionsList"></div>
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()">下一题 →</button>
+    </div>
+  </div>
+
+  <div id="screen-calculating" class="screen">
+    <div class="card">
+      <div class="calculating">
+        <div class="calc-emoji">🔮</div>
+        <p class="calc-text">正在生成你的专属答案…</p>
+        <div class="calc-dots">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="screen-result" class="screen">
+    <div class="card">
+      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-type-badge" id="resultBadge"></div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <div class="divider"></div>
+      <p class="result-desc" id="resultDesc"></p>
+      <div class="result-advice" id="resultAdvice">
+        <div class="result-advice-title">💡 给你的建议</div>
+        <ul id="resultAdviceList"></ul>
+      </div>
+      <div class="result-actions">
+        <button class="btn-retry" onclick="restartTest()">🔄 重新测试</button>
+        <button class="btn-share" onclick="shareResult()">📤 分享结果</button>
+      </div>
+      <p class="disclaimer-small" style="margin-top:12px;">纯趣味测试，非科学评估 · 仅供娱乐</p>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const TEST_CONFIG = {
+  title: '你更适合大城市拼，还是小城市躺？',
+  subtitle: '25道题，测出你的城市适配基因',
+  description: '大城市的机会和小城市的松弛，哪个才是你的灵魂归宿？25道题，测出你的城市适配基因，看看你该在哪片土壤生根发芽。',
+  emoji: '🌆',
+  themeColor: '#6366F1',
+  accentColor: '#14B8A6',
+
+  questions: [
+    { text: '看到朋友圈里有人晒升职、买房、跳槽加薪，你的第一反应是？',
+      options: [
+        { text: '焦虑感拉满，立刻开始规划自己的下一步', score: 4 },
+        { text: '有点触动，但知道每个人节奏不一样', score: 3 },
+        { text: '没什么感觉，自己的生活也挺舒服', score: 2 },
+        { text: '羡慕？不，我只觉得他们好累', score: 1 } ] },
+    { text: '你理想中的工作节奏是？',
+      options: [
+        { text: '996也行，只要给钱够多、成长够快', score: 4 },
+        { text: '有加班但总体可控，不想太闲', score: 3 },
+        { text: '朝九晚五，偶尔加班可以接受', score: 2 },
+        { text: '坚决不加班，工作只是生活的一部分', score: 1 } ] },
+    { text: '周末你更倾向于怎么过？',
+      options: [
+        { text: '参加各种行业沙龙、展览、社交局', score: 4 },
+        { text: '探店、看展、打卡网红地，城市探索', score: 3 },
+        { text: '和朋友在家附近聚聚，简单吃顿饭', score: 2 },
+        { text: '在家躺平，或者去公园/山里发呆', score: 1 } ] },
+    { text: '你能接受的通勤时间上限是？',
+      options: [
+        { text: '1小时以上，住远点省房租也能忍', score: 4 },
+        { text: '45分钟左右，换地铁线可以忍', score: 3 },
+        { text: '30分钟以内，通勤太长影响生活质量', score: 2 },
+        { text: '最好走路或骑车，超过15分钟都难受', score: 1 } ] },
+    { text: '对于"稳定"这个词，你的真实感受是？',
+      options: [
+        { text: '稳定意味着停滞，有点可怕', score: 4 },
+        { text: '短期稳定可以，长期还是要向上突破', score: 3 },
+        { text: '稳定挺好，不用每天提心吊胆', score: 2 },
+        { text: '稳定就是最大的幸福，求之不得', score: 1 } ] },
+    { text: '你更喜欢哪种生活环境？',
+      options: [
+        { text: '高楼林立、霓虹闪烁，不夜城的节奏', score: 4 },
+        { text: '繁华地段的高层公寓，俯瞰城市', score: 3 },
+        { text: '新老结合的区域，有烟火气也有配套', score: 2 },
+        { text: '小桥流水、绿树成荫，推窗见山', score: 1 } ] },
+    { text: '你的消费观念更接近？',
+      options: [
+        { text: '钱是赚出来的，该花就花，投资自己', score: 4 },
+        { text: '精打细算，但愿意为体验和成长付费', score: 3 },
+        { text: '量入为出，不想有太多经济压力', score: 2 },
+        { text: '够用就好，物欲越低越自由', score: 1 } ] },
+    { text: '面对高压竞争环境，你的反应是？',
+      options: [
+        { text: '兴奋，越有压力越能激发潜力', score: 4 },
+        { text: '有压力但能承受，逼自己一把', score: 3 },
+        { text: '尽量回避，不想活得那么累', score: 2 },
+        { text: '极度排斥，竞争让我感到窒息', score: 1 } ] },
+    { text: '你对自己的事业野心是？',
+      options: [
+        { text: '必须财务自由，目标是行业头部', score: 4 },
+        { text: '希望做到管理层，有话语权和影响力', score: 3 },
+        { text: '做好本职工作，过体面的生活就好', score: 2 },
+        { text: '工作只是为了养活自己，不想太拼', score: 1 } ] },
+    { text: '你更喜欢哪种社交圈子？',
+      options: [
+        { text: '多元化、跨行业，能拓展人脉和资源', score: 4 },
+        { text: '志同道合的奋斗者，互相激励', score: 3 },
+        { text: '发小和同学，知根知底的稳定关系', score: 2 },
+        { text: '三五知己，越少越精，拒绝无效社交', score: 1 } ] },
+    { text: '对于"慢生活"的态度是？',
+      options: [
+        { text: '欣赏但不适合我，我怕落后', score: 4 },
+        { text: '偶尔向往，但现实中停不下来', score: 3 },
+        { text: '正在尝试，希望平衡快慢', score: 2 },
+        { text: '这就是我追求的理想状态', score: 1 } ] },
+    { text: '你更向往哪种自然景观？',
+      options: [
+        { text: '城市天际线，玻璃幕墙和霓虹灯', score: 4 },
+        { text: '都市公园，有设计感的人工园林', score: 3 },
+        { text: '郊区绿野，有农田和小溪', score: 2 },
+        { text: '原始森林、大海、山野，越自然越好', score: 1 } ] },
+    { text: '独处时，你的感受是？',
+      options: [
+        { text: '会焦虑，想立刻找事做或约人', score: 4 },
+        { text: '能独处，但最好偶尔有人联系', score: 3 },
+        { text: '很舒服，一个人能做很多事', score: 2 },
+        { text: '极度享受，独处是充电方式', score: 1 } ] },
+    { text: '面对人生重大选择，你更依赖？',
+      options: [
+        { text: '数据和机会，哪里有机会就去哪里', score: 4 },
+        { text: '理性分析，权衡利弊后决定', score: 3 },
+        { text: '家人和朋友的建议', score: 2 },
+        { text: '内心直觉，舒服最重要', score: 1 } ] },
+    { text: '你对父母养老的期望是？',
+      options: [
+        { text: '在大城市给他们买房，享受最好的医疗', score: 4 },
+        { text: '接来同城，方便照顾', score: 3 },
+        { text: '在老家给他们最好的生活条件', score: 2 },
+        { text: '回老家陪他们，家人在一起最重要', score: 1 } ] },
+    { text: '你更在意哪种生活品质？',
+      options: [
+        { text: '丰富的文化娱乐、前沿的信息、多元的选择', score: 4 },
+        { text: '便利的交通、完善的配套、精致的服务', score: 3 },
+        { text: '亲切的邻里关系、熟悉的生活节奏', score: 2 },
+        { text: '新鲜的空气、安静的环境、慢下来的时间', score: 1 } ] },
+    { text: '如果人生是一部电影，你希望它是？',
+      options: [
+        { text: '热血励志片，不断突破、逆袭成功', score: 4 },
+        { text: '职场进阶剧，步步为营、攀登高峰', score: 3 },
+        { text: '温情家庭剧，平淡但温暖', score: 2 },
+        { text: '田园治愈片，岁月静好、诗和远方', score: 1 } ] },
+    { text: '你对孩子的教育观念（如有）是？',
+      options: [
+        { text: '必须在最好的学区，起跑线不能输', score: 4 },
+        { text: '大城市教育资源多，尽量创造条件', score: 3 },
+        { text: '成绩不是全部，开心健康就好', score: 2 },
+        { text: '在哪都能成才，不想给孩子太大压力', score: 1 } ] },
+    { text: '你更喜欢哪种信息获取方式？',
+      options: [
+        { text: '行业峰会、沙龙、专业社群，一手信息', score: 4 },
+        { text: '线上课程、行业报告、深度文章', score: 3 },
+        { text: '朋友圈、公众号、日常聊天', score: 2 },
+        { text: '不太关注，过好自己的日子就行', score: 1 } ] },
+    { text: '你对自己的定义更接近？',
+      options: [
+        { text: '野心家，世界那么大，我想去征服', score: 4 },
+        { text: '攀登者，想站得更高，看看不一样的风景', score: 3 },
+        { text: '漫步者，不求最快，但求踏实', score: 2 },
+        { text: '栖居者，找一方净土，安放身心', score: 1 } ] },
+    { text: '你对"成功"的定义是？',
+      options: [
+        { text: '财务自由、社会地位、行业影响力', score: 4 },
+        { text: '职业成就、被人认可、实现价值', score: 3 },
+        { text: '家庭幸福、身体健康、生活安稳', score: 2 },
+        { text: '内心平静、做喜欢的事、不为钱焦虑', score: 1 } ] },
+    { text: '你更渴望哪种人际关系？',
+      options: [
+        { text: '广泛的人脉网络，各行各业都有熟人', score: 4 },
+        { text: '高质量的职场/行业关系，互相成就', score: 3 },
+        { text: '三五老友，常年陪伴，不常联系也放心', score: 2 },
+        { text: '深度绑定的一两个人，胜过泛泛之交', score: 1 } ] },
+    { text: '面对未知和变化，你的态度是？',
+      options: [
+        { text: '兴奋，变化意味着机会', score: 4 },
+        { text: '接受，时代在变，必须跟着变', score: 3 },
+        { text: '谨慎，希望不要太频繁', score: 2 },
+        { text: '排斥，更喜欢可预期的生活', score: 1 } ] },
+    { text: '你的理想居住空间是？',
+      options: [
+        { text: '市中心的高级公寓，出门就是商圈', score: 4 },
+        { text: '交通方便的商品房，配套齐全', score: 3 },
+        { text: '小区安静、绿化好，有生活气息', score: 2 },
+        { text: '带院子的小房子，能养花种菜', score: 1 } ] },
+    { text: '如果明天给你一笔意外之财，你会？',
+      options: [
+        { text: '投资自己，学习新技能或创业', score: 4 },
+        { text: '投资房产，在大城市安个更好的家', score: 3 },
+        { text: '存起来，改善家人的生活', score: 2 },
+        { text: '辞掉工作，去旅居或回老家', score: 1 } ] }
+  ],
+
+  results: [
+    {
+      title: '🌃 都市野心家型',
+      emoji: '🌃',
+      range: [84, 100],
+      color: '#4F46E5',
+      description: '你是为大城市而生的"野心家"——霓虹、高楼、快节奏，这些不是压力，而是你的养分。你享受竞争，渴望突破，在人群中你反而更兴奋。对你来说，"小城市"三个字意味着机会匮乏和视野局限。你的灵魂需要的是无限的可能性和永不停歇的生长。你注定是城市森林中的猛兽，在钢筋水泥中开出自己的花。',
+      advice: [
+        '你的野心是天赋，但记得偶尔停下来问问自己：累吗？',
+        '在大城市容易迷失，定期回顾初心，避免为卷而卷',
+        '建立真正的支持系统，而非只有利益交换的人脉',
+        '别用"成功"绑架自己，允许自己有脆弱的时刻'
+      ]
+    },
+    {
+      title: '🌉 城市漫游者型',
+      emoji: '🌉',
+      range: [67, 83],
+      color: '#7C3AED',
+      description: '你是城市中的"漫游者"——喜欢大城市的便利和丰富，但也在寻找属于自己的节奏。你能承受压力，但不想被压垮；你想要成功，但不愿牺牲全部生活。你在繁华和宁静之间游走，偶尔迷茫，但总体向前。你适合在大城市找一个"舒适圈"，不必追求极致，稳步前进就好。',
+      advice: [
+        '你已经找到了不错的平衡，关键是要守住它，不要被别人带跑',
+        '在大城市，"够用就好"是一种智慧，不必盲目攀比',
+        '培养一两个能让自己慢下来的爱好，作为情绪出口',
+        '定期去城市边缘走走，提醒自己不只有水泥森林'
+      ]
+    },
+    {
+      title: '🌿 平衡探索者型',
+      emoji: '🌿',
+      range: [50, 66],
+      color: '#14B8A6',
+      description: '你是一只"候鸟"——在大城市和小城市之间徘徊，尚未找到确定的栖息地。你既渴望机会，又向往松弛；既怕被落下，又怕活得太累。你不是没有野心，只是不确定代价是否值得。这个阶段的迷茫是正常的，你不需要立刻做决定，给自己时间探索，答案会在行动中浮现。',
+      advice: [
+        '迷茫是探索的代价，不必急于给自己贴标签',
+        '试着列出"不可妥协项"和"可接受项"，帮自己做选择',
+        '短期可以在大城市攒资源，长期不一定非要留下',
+        '无论选哪条路，接受它的代价，而不是幻想两全其美'
+      ]
+    },
+    {
+      title: '🏡 小镇生活家型',
+      emoji: '🏡',
+      range: [34, 49],
+      color: '#059669',
+      description: '你是天生的"生活家"——比起大城市的五光十色，你更在意一日三餐的温度和邻里问候的亲切。你不缺能力，只是选择了另一种价值排序：舒适、关系、健康，排在名利前面。你在小城市能活得更加舒展，不必勉强自己去适应不属于自己的节奏。你的幸福不需要靠"赢"来证明。',
+      advice: [
+        '不要觉得"没在大城市拼过"就是遗憾，每个人都有适合自己的土壤',
+        '在小城市也要保持学习和成长，避免视野局限',
+        '建立高质量的社交圈，找到和你同频的人',
+        '偶尔去大城市看看，保持开放，但不强迫自己留下'
+      ]
+    },
+    {
+      title: '🌲 自然栖居者型',
+      emoji: '🌲',
+      range: [25, 33],
+      color: '#10B981',
+      description: '你是都市丛林中的"隐士"——城市的喧嚣对你来说是噪音，人与人的竞争让你窒息。你渴望的不过是一方安静、几片绿意、不被打扰的时光。你不是逃避，而是早早地看清了自己需要什么。对你来说，成功不是站得多高，而是睡得有多香。你需要的是能安放身心的地方，而不是一个用来证明自己的舞台。',
+      advice: [
+        '你的敏感是天赋，不是缺陷，不要因此否定自己',
+        '小城市或乡村确实更适合你，但也要有经济规划',
+        '探索远程工作、自由职业等可能性，不必受地域限制',
+        '即使环境简单，也要保持精神世界的丰富'
+      ]
+    }
+  ],
+
+  disclaimer: '纯趣味测试，非科学评估 · 仅供娱乐',
+  shareText: '我刚测了「城市适配基因」，结果太准了！你是都市野心家还是自然栖居者？来测测看👉',
+};
+
+let currentQuestion = 0;
+let scores = [];
+
+function initConfig() {
+  const cfg = TEST_CONFIG;
+  document.title = cfg.title;
+  document.querySelector('meta[name="description"]').content = cfg.description || cfg.title;
+  const root = document.documentElement;
+  root.style.setProperty('--primary', cfg.themeColor);
+  root.style.setProperty('--primary-dark', adjustColor(cfg.themeColor, -15));
+  root.style.setProperty('--bg-gradient', `linear-gradient(135deg, ${cfg.themeColor} 0%, ${cfg.accentColor} 100%)`);
+  document.getElementById('splashEmoji').textContent = cfg.emoji || '🧠';
+  document.getElementById('splashTitle').textContent = cfg.title;
+  document.getElementById('splashSubtitle').textContent = cfg.subtitle || '';
+  document.getElementById('splashDesc').textContent = cfg.description || '';
+  document.getElementById('questionCountTag').textContent = `共 ${cfg.questions.length} 题 · 约1分钟`;
+}
+
+function adjustColor(hex, amount) {
+  const num = parseInt(hex.replace('#', ''), 16);
+  const r = Math.max(0, Math.min(255, ((num >> 16) & 0xFF) + amount));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xFF) + amount));
+  const b = Math.max(0, Math.min(255, (num & 0xFF) + amount));
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+}
+
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + screenId).classList.add('active');
+}
+
+function startTest() {
+  currentQuestion = 0;
+  scores = [];
+  showScreen('question');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+  const total = cfg.questions.length;
+  document.getElementById('progressBar').style.width = ((currentQuestion) / total * 100) + '%';
+  document.getElementById('questionCounter').textContent = `${currentQuestion + 1} / ${total}`;
+  document.getElementById('questionText').textContent = q.text;
+  const optionsHtml = q.options.map((opt, i) => {
+    const letter = String.fromCharCode(65 + i);
+    return `<button class="option-btn" onclick="selectOption(${i}, this)" data-index="${i}"><span class="option-letter">${letter}</span>${opt.text}</button>`;
+  }).join('');
+  document.getElementById('optionsList').innerHTML = optionsHtml;
+  document.getElementById('btnNext').classList.remove('visible');
+  const card = document.querySelector('#screen-question .card');
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = 'fadeSlideUp 0.4s ease';
+}
+
+function selectOption(index, btn) {
+  const cfg = TEST_CONFIG;
+  const q = cfg.questions[currentQuestion];
+  document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  scores[currentQuestion] = q.options[index].score;
+  const nextBtn = document.getElementById('btnNext');
+  nextBtn.classList.add('visible');
+  nextBtn.textContent = currentQuestion < cfg.questions.length - 1 ? '下一题 →' : '查看结果 ✨';
+}
+
+function nextQuestion() {
+  const cfg = TEST_CONFIG;
+  if (scores[currentQuestion] === undefined) {
+    showToast('请先选择一个选项哦~');
+    return;
+  }
+  currentQuestion++;
+  if (currentQuestion < cfg.questions.length) {
+    renderQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  const cfg = TEST_CONFIG;
+  const totalScore = scores.reduce((a, b) => a + b, 0);
+  let matchedResult = cfg.results[0];
+  for (const r of cfg.results) {
+    if (totalScore >= r.range[0] && totalScore <= r.range[1]) {
+      matchedResult = r;
+      break;
+    }
+  }
+  showScreen('calculating');
+  setTimeout(() => {
+    showScreen('result');
+    document.getElementById('resultEmoji').textContent = matchedResult.emoji || '🎯';
+    document.getElementById('resultBadge').textContent = matchedResult.title;
+    document.getElementById('resultBadge').style.background = (matchedResult.color || cfg.themeColor) + '18';
+    document.getElementById('resultBadge').style.color = matchedResult.color || cfg.themeColor;
+    document.getElementById('resultTitle').textContent = matchedResult.title;
+    document.getElementById('resultDesc').textContent = matchedResult.description || '';
+    const adviceList = document.getElementById('resultAdviceList');
+    if (matchedResult.advice && matchedResult.advice.length > 0) {
+      adviceList.innerHTML = matchedResult.advice.map(a => `<li>${a}</li>`).join('');
+      document.getElementById('resultAdvice').style.display = 'block';
+    } else {
+      document.getElementById('resultAdvice').style.display = 'none';
+    }
+  }, 1500);
+}
+
+function restartTest() {
+  showScreen('splash');
+}
+
+function shareResult() {
+  const text = TEST_CONFIG.shareText || `我刚测了「${TEST_CONFIG.title}」，来看看你是什么类型？`;
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ title: TEST_CONFIG.title, text: text, url: url }).catch(() => {
+      copyToClipboard(text + '\n' + url);
+    });
+  } else {
+    copyToClipboard(text + '\n' + url);
+  }
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('已复制分享文案和链接 ✅');
+    }).catch(() => { fallbackCopy(text); });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  ta.style.top = '-9999px';
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast('已复制分享文案和链接 ✅');
+  } catch (e) {
+    showToast('复制失败，请手动复制页面链接');
+  }
+  document.body.removeChild(ta);
+}
+
+let toastTimer;
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2000);
+}
+
+initConfig();
+</script>
+</body>
+</html>
